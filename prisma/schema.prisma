@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  user_id         Int         @id @default(autoincrement())
+  created_at      DateTime    @default(now())
+  profile_pic_url String      @db.VarChar(500)
+  username        String      @db.VarChar(100)
+  articlesByUser  Articles[]
+  commentsByUser  Comments[]
+  userLikes       UserLikes[]
+}
+
+model Topics {
+  topic_id          Int        @id @default(autoincrement())
+  topic_name        String     @unique
+  description       String
+  articlesUderTopic Articles[]
+}
+
+model Articles {
+  aritcle_id        Int         @id @default(autoincrement())
+  created_at        DateTime    @default(now())
+  title             String
+  body              String
+  article_image_url String
+  author            Users       @relation(fields: [author_id], references: [user_id])
+  author_id         Int         @unique
+  topic             Topics      @relation(fields: [topic_id], references: [topic_id])
+  topic_id          Int
+  articleComments   Comments[]
+  userLikes         UserLikes[]
+}
+
+model Comments {
+  comment_id Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  author     Users    @relation(fields: [author_id], references: [user_id])
+  author_id  Int
+  body       String
+  article    Articles @relation(fields: [article_id], references: [aritcle_id])
+  article_id Int
+}
+
+model UserLikes {
+  like_id    Int      @id @default(autoincrement())
+  user       Users    @relation(fields: [user_id], references: [user_id])
+  user_id    Int
+  article    Articles @relation(fields: [article_id], references: [aritcle_id])
+  article_id Int
+  value      Int
+}
