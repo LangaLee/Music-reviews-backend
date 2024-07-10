@@ -18,6 +18,7 @@ model Users {
   created_at      DateTime    @default(now())
   profile_pic_url String      @db.VarChar(500)
   username        String      @db.VarChar(100)
+  password        String      @db.VarChar(500)
   articlesByUser  Articles[]
   commentsByUser  Comments[]
   userLikes       UserLikes[]
@@ -37,9 +38,11 @@ model Articles {
   body              String
   article_image_url String
   author            Users       @relation(fields: [author_id], references: [user_id])
-  author_id         Int         @unique
+  author_id         Int
   topic             Topics      @relation(fields: [topic_id], references: [topic_id])
   topic_id          Int
+  likes             Int
+  dislikes          Int
   articleComments   Comments[]
   userLikes         UserLikes[]
 }
