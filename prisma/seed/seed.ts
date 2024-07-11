@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import seedingData from "../data";
-import { articleData, topicData, userData } from "../../TS types";
+import { articleData, commentData, topicData, userData } from "../../TS types";
 
 const client = new PrismaClient();
 
@@ -10,11 +10,13 @@ async function deleteTables() {
 
   const tables = tableNames
     .map(({ tablename }) => tablename)
-    .filter((name) => name !== "_prisma_migrations")
     .map((name) => `"public"."${name}"`)
     .join(", ");
   try {
-    await client.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`);
+    await client.$executeRawUnsafe(
+      `TRUNCATE TABLE ${tables} RESTART IDENTITY;`
+    );
+    // CASCADE ??
   } catch (error) {
     console.error({ error });
   }
@@ -49,7 +51,22 @@ async function insertArticles(
     });
     return articleCopy;
   });
-  await client.articles.createMany({ data: formatedData });
+  await client.articles.createManyAndReturn({
+    data: formatedData,
+  });
+}
+async function insertCommenets(comments: commentData, users: userData) {
+  const formatedComments = comments.map((comment) => {
+    const commentCopy = { ...comment };
+    users.forEach((user) => {
+      if (user.username === commentCopy.author) {
+        commentCopy.author_id = user.user_id;
+        delete commentCopy.author;
+      }
+    });
+    return commentCopy;
+  });
+  await client.comments.createMany({ data: formatedComments });
 }
 
 async function seed({ userData, commentData, articleData, topicData }) {
@@ -57,6 +74,7 @@ async function seed({ userData, commentData, articleData, topicData }) {
   const returnedUsers = await insertUsers(userData);
   const returnedTopics = await insertTopics(topicData);
   await insertArticles(articleData, returnedUsers, returnedTopics);
+  await insertCommenets(commentData, returnedUsers);
 }
 
 seed(seedingData);
