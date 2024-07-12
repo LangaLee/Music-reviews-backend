@@ -1,6 +1,14 @@
 import { PrismaClient } from "@prisma/client";
-import seedingData from "../data";
-import { articleData, commentData, topicData, userData } from "../../TS types";
+import userData from "../data/userData";
+import commentData from "../data/commentData";
+import articleData from "../data/articleData";
+import topicData from "../data/topicData";
+import {
+  articleDataType,
+  commentDataType,
+  topicDataType,
+  userDataType,
+} from "../../TS types";
 
 const client = new PrismaClient();
 
@@ -35,27 +43,52 @@ async function insertArticles(
   users: userData,
   topics: topicData
 ) {
-  const formatedData = articles.map((article) => {
-    const articleCopy = { ...article };
-    users.forEach((user) => {
-      if (user.username === articleCopy.author) {
-        articleCopy.author_id = user.user_id;
-        delete articleCopy.author;
-      }
-    });
-    topics.forEach((topic) => {
-      if (topic.topic_name === articleCopy.topic) {
-        articleCopy.topic_id = topic.topic_id;
-        delete articleCopy.topic;
-      }
-    });
-    return articleCopy;
-  });
+  const formatedData = articles.map(
+    (article: {
+      title: string;
+      body: string;
+      author?: string;
+      topic?: string;
+      topic_id: number;
+      article_image_url: string;
+      likes: number;
+      dislikes: number;
+      author_id: number;
+    }) => {
+      const articleCopy = { ...article };
+      users.forEach(
+        (user: {
+          username: string;
+          password: string;
+          profile_pic_url: string;
+          user_id: number;
+        }) => {
+          if (user.username === articleCopy.author) {
+            articleCopy.author_id = user.user_id;
+            delete articleCopy.author;
+          }
+        }
+      );
+      topics.forEach(
+        (topic: {
+          topic_name: string;
+          description: string;
+          topic_id: number;
+        }) => {
+          if (topic.topic_name === articleCopy.topic) {
+            articleCopy.topic_id = topic.topic_id;
+            delete articleCopy.topic;
+          }
+        }
+      );
+      return articleCopy;
+    }
+  );
   await client.articles.createManyAndReturn({
     data: formatedData,
   });
 }
-async function insertCommenets(comments: commentData, users: userData) {
+async function insertComments(comments: commentData, users: userData) {
   const formatedComments = comments.map((comment) => {
     const commentCopy = { ...comment };
     users.forEach((user) => {
@@ -69,12 +102,17 @@ async function insertCommenets(comments: commentData, users: userData) {
   await client.comments.createMany({ data: formatedComments });
 }
 
-async function seed({ userData, commentData, articleData, topicData }) {
+async function seed(
+  users: userDataType,
+  topics: topicDataType,
+  articles: articleDataType,
+  comments: commentDataType
+) {
   await deleteTables();
-  const returnedUsers = await insertUsers(userData);
-  const returnedTopics = await insertTopics(topicData);
-  await insertArticles(articleData, returnedUsers, returnedTopics);
-  await insertCommenets(commentData, returnedUsers);
+  const returnedUsers = await insertUsers(users);
+  const returnedTopics = await insertTopics(topics);
+  await insertArticles(articles, returnedUsers, returnedTopics);
+  await insertComments(comments, returnedUsers);
 }
 
-seed(seedingData);
+seed(userData, topicData, articleData, commentData);
