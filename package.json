@@ -17,7 +17,6 @@
   "description": "",
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.10",
     "@types/supertest": "^6.0.2",
@@ -30,6 +29,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.16.2",
+    "@types/express": "^4.17.21",
     "ejs": "^3.1.10",
     "express": "^4.19.2"
   }

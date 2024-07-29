@@ -30,89 +30,31 @@ async function deleteTables() {
   }
 }
 
-async function insertUsers(users: userData) {
-  const data = await client.users.createManyAndReturn({ data: users });
-  return data;
+async function insertUsers(users: userDataType) {
+  await client.users.createMany({ data: users });
 }
-async function insertTopics(topics: topicData) {
-  const data = await client.topics.createManyAndReturn({ data: topics });
-  return data;
+async function insertTopics(topics: topicDataType) {
+  await client.topics.createMany({ data: topics });
 }
-async function insertArticles(
-  articles: articleData,
-  users: userData,
-  topics: topicData
-) {
-  const formatedData = articles.map(
-    (article: {
-      title: string;
-      body: string;
-      author?: string;
-      topic?: string;
-      topic_id: number;
-      article_image_url: string;
-      likes: number;
-      dislikes: number;
-      author_id: number;
-    }) => {
-      const articleCopy = { ...article };
-      users.forEach(
-        (user: {
-          username: string;
-          password: string;
-          profile_pic_url: string;
-          user_id: number;
-        }) => {
-          if (user.username === articleCopy.author) {
-            articleCopy.author_id = user.user_id;
-            delete articleCopy.author;
-          }
-        }
-      );
-      topics.forEach(
-        (topic: {
-          topic_name: string;
-          description: string;
-          topic_id: number;
-        }) => {
-          if (topic.topic_name === articleCopy.topic) {
-            articleCopy.topic_id = topic.topic_id;
-            delete articleCopy.topic;
-          }
-        }
-      );
-      return articleCopy;
-    }
-  );
-  await client.articles.createManyAndReturn({
-    data: formatedData,
+async function insertArticles(articles: articleDataType) {
+  await client.articles.createMany({
+    data: articles,
   });
 }
-async function insertComments(comments: commentData, users: userData) {
-  const formatedComments = comments.map((comment) => {
-    const commentCopy = { ...comment };
-    users.forEach((user) => {
-      if (user.username === commentCopy.author) {
-        commentCopy.author_id = user.user_id;
-        delete commentCopy.author;
-      }
-    });
-    return commentCopy;
-  });
-  await client.comments.createMany({ data: formatedComments });
+async function insertComments(comments: commentDataType) {
+  await client.comments.createMany({ data: comments });
 }
 
-async function seed(
+async function seedData(
   users: userDataType,
   topics: topicDataType,
   articles: articleDataType,
   comments: commentDataType
 ) {
   await deleteTables();
-  const returnedUsers = await insertUsers(users);
-  const returnedTopics = await insertTopics(topics);
-  await insertArticles(articles, returnedUsers, returnedTopics);
-  await insertComments(comments, returnedUsers);
+  await insertUsers(users);
+  await insertTopics(topics);
+  await insertArticles(articles);
+  await insertComments(comments);
 }
-
-seed(userData, topicData, articleData, commentData);
+seedData(userData, topicData, articleData, commentData);
