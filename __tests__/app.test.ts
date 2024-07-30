@@ -13,20 +13,12 @@ describe("Testing the server", () => {
       } = response;
       expect(status).toBe(200);
       expect(users.length).not.toBe(0);
-      console.log(users);
-      // users.forEach(
-      //   ({
-      //     user_id,
-      //     created_at,
-      //     profile_pic_url,
-      //     username,
-      //   }: usersReturnData) => {
-      //     expect(user_id).toEqual(expect.any(Number));
-      //     expect(created_at).toEqual(expect.any(Date));
-      //     expect(profile_pic_url).toEqual(expect.any(String));
-      //     expect(username).toEqual(expect.any(String));
-      //   }
-      // );
+      users.forEach((user: usersReturnData) => {
+        expect(user.user_id).toEqual(expect.any(Number));
+        expect(user.created_at).toEqual(expect.any(Date));
+        expect(user.profile_pic_url).toEqual(expect.any(String));
+        expect(user.username).toEqual(expect.any(String));
+      });
     });
   });
 });

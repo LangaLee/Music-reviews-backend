@@ -23,10 +23,10 @@ export type commentDataType = Array<{
   article_id: number;
 }>;
 
-export type usersReturnData = Array<{
+export type usersReturnData = {
   user_id: number;
   created_at: Date;
   profile_pic_url: string;
   username: string;
   password: string;
-}>;
+};
