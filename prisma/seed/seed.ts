@@ -1,8 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import userData from "../data/userData";
-import commentData from "../data/commentData";
-import articleData from "../data/articleData";
-import topicData from "../data/topicData";
+
 import {
   articleDataType,
   commentDataType,
@@ -57,4 +54,5 @@ async function seedData(
   await insertArticles(articles);
   await insertComments(comments);
 }
-seedData(userData, topicData, articleData, commentData);
+
+export default seedData;

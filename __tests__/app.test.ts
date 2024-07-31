@@ -1,15 +1,22 @@
-import { describe, expect, test } from "@jest/globals";
+import { beforeAll, beforeEach, describe, expect, test } from "@jest/globals";
 import app from "../app";
 import supertest from "supertest";
 import { usersReturnData } from "../TS types";
 import fs from "fs/promises";
-
+import seedData from "../prisma/seed/seed";
+import userData from "../prisma/data/userData";
+import commentData from "../prisma/data/commentData";
+import articleData from "../prisma/data/articleData";
+import topicData from "../prisma/data/topicData";
+beforeEach(() => {
+  return seedData(userData, topicData, articleData, commentData);
+});
 describe("Testing the server", () => {
-  describe("api/documentation", () => {
+  describe("api/docs", () => {
     test("200: returns an object describing the endpoints", async () => {
-      const response = await supertest(app).get("/api/docmentation");
+      const response = await supertest(app).get("/api/docs");
       const documentation = await fs.readFile(
-        `${__dirname}../documentation/endpoints.json`,
+        `${__dirname}/../documentation/endpoints.json`,
         "utf-8"
       );
       const {
