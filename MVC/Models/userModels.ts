@@ -1,14 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import { usersReturnData } from "../../TS types";
-const prisma = new PrismaClient();
+import client from "./prismaClient";
 
-async function findUsers(): Promise<Array<usersReturnData>> {
+export async function findUsers() {
   try {
-    const users = await prisma.users.findMany();
+    const users = await client.users.findMany();
     return users;
   } finally {
-    await prisma.$disconnect();
+    await client.$disconnect();
   }
 }
-
-export default findUsers;

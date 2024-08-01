@@ -32,7 +32,7 @@ model Topics {
 }
 
 model Articles {
-  aritcle_id        Int         @id @default(autoincrement())
+  article_id        Int         @id @default(autoincrement())
   created_at        DateTime    @default(now())
   title             String
   body              String
@@ -53,7 +53,7 @@ model Comments {
   author     Users    @relation(fields: [author_id], references: [user_id])
   author_id  Int
   body       String
-  article    Articles @relation(fields: [article_id], references: [aritcle_id])
+  article    Articles @relation(fields: [article_id], references: [article_id])
   article_id Int
 }
 
@@ -61,7 +61,7 @@ model UserLikes {
   like_id    Int      @id @default(autoincrement())
   user       Users    @relation(fields: [user_id], references: [user_id])
   user_id    Int
-  article    Articles @relation(fields: [article_id], references: [aritcle_id])
+  article    Articles @relation(fields: [article_id], references: [article_id])
   article_id Int
   value      Int
 }

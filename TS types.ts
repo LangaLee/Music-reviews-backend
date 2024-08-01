@@ -11,7 +11,6 @@ export type articleDataType = Array<{
   body: string;
   article_image_url: string;
   author_id: number;
-
   topic_id: number; // what have I done to need topic and topic Id ??? reapeating data ??
   likes: number;
   dislikes: number;
@@ -23,10 +22,28 @@ export type commentDataType = Array<{
   article_id: number;
 }>;
 
-export type usersReturnData = {
+export type returnedUsers = {
   user_id: number;
   created_at: Date;
   profile_pic_url: string;
   username: string;
   password: string;
+};
+
+export type returnedTopics = {
+  topic_id: number;
+  topic_name: string;
+  description: string;
+};
+
+export type returnedArticles = {
+  article_id: number;
+  created_at: Date;
+  title: string;
+  body: string;
+  article_image_url: string;
+  author: { username: string };
+  topic: { topic_name: string };
+  likes: number;
+  dislikes: number;
 };

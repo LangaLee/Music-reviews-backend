@@ -9,7 +9,7 @@
     "migrate": "npx prisma migrate dev --name init"
   },
   "prisma": {
-    "seed": "npx tsx ./prisma/seed/seed.ts"
+    "seed": "npx tsx ./prisma/seed/runSeed.ts"
   },
   "keywords": [],
   "author": "",
