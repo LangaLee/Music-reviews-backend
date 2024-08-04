@@ -12,7 +12,7 @@ beforeEach(() => {
   return seedData(userData, topicData, articleData, commentData);
 });
 describe("Testing the server", () => {
-  describe("api/docs", () => {
+  describe("/api/docs", () => {
     test("200: returns an object describing the endpoints", async () => {
       const response = await supertest(app).get("/api/docs");
       const documentation = await fs.readFile(
@@ -23,19 +23,19 @@ describe("Testing the server", () => {
         status,
         body: { docs },
       } = response;
-      expect(status).toBe(200);
+      expect(status).toEqual(200);
       expect(docs).toEqual(documentation);
     });
   });
-  describe("api/users", () => {
+  describe("/api/users", () => {
     test("200: returns users on a key of users", async () => {
       const response = await supertest(app).get("/api/users");
       const {
         body: { users },
         status,
       } = response;
-      expect(status).toBe(200);
-      expect(users.length).toBe(4);
+      expect(status).toEqual(200);
+      expect(users.length).toEqual(4);
       users.forEach((user: returnedUsers) => {
         expect(user.user_id).toEqual(expect.any(Number));
         expect(new Date(user.created_at)).toEqual(expect.any(Date));
@@ -51,19 +51,19 @@ describe("Testing the server", () => {
         status,
         body: { msg },
       } = response;
-      expect(status).toBe(500);
-      expect(msg).toBe("Endpoint not found");
+      expect(status).toEqual(500);
+      expect(msg).toEqual("Endpoint not found");
     });
   });
-  describe("api/topics", () => {
+  describe("/api/topics", () => {
     test("200: returns available topics", async () => {
       const response = await supertest(app).get("/api/topics");
       const {
         status,
         body: { topics },
       } = response;
-      expect(status).toBe(200);
-      expect(topics.length).toBe(4);
+      expect(status).toEqual(200);
+      expect(topics.length).toEqual(4);
       topics.forEach((topic: returnedTopics) => {
         expect(topic.topic_id).toEqual(expect.any(Number));
         expect(topic.topic_name).toEqual(expect.any(String));
@@ -71,25 +71,57 @@ describe("Testing the server", () => {
       });
     });
   });
-  describe("api/articles", () => {
+  describe("/api/articles", () => {
     test("200: returns all available articles", async () => {
       const response = await supertest(app).get("/api/articles");
       const {
         status,
         body: { articles },
       } = response;
-      expect(status).toBe(200);
-      expect(articles.length).toBe(3);
+      expect(status).toEqual(200);
+      expect(articles.length).toEqual(3);
       articles.forEach((article: returnedArticles) => {
         expect(article.article_id).toEqual(expect.any(Number));
         expect(article.article_image_url).toEqual(expect.any(String));
-        expect(article.author.username).toEqual(expect.any(String));
+        expect(article.author).toEqual(expect.any(String));
         expect(new Date(article.created_at)).toEqual(expect.any(Date));
         expect(article.dislikes).toEqual(expect.any(Number));
         expect(article.likes).toEqual(expect.any(Number));
         expect(article.title).toEqual(expect.any(String));
-        expect(article.topic.topic_name).toEqual(expect.any(String));
+        expect(article.topic).toEqual(expect.any(String));
+        expect(article.commentCount).toEqual(expect.any(Number));
       });
+    });
+  });
+  describe("/api/articles/:article_id", () => {
+    test("200: returns the article with that id", async () => {
+      const response = await supertest(app).get("/api/articles/1");
+      const {
+        status,
+        body: {
+          article: {
+            article_id,
+            article_image_url,
+            body,
+            title,
+            author,
+            likes,
+            dislikes,
+            commentCount,
+            topic,
+          },
+        },
+      } = response;
+      expect(status).toBe(200);
+      expect(article_id).toBe(1);
+      expect(article_image_url).toEqual(expect.any(String));
+      expect(body).toEqual(expect.any(String));
+      expect(title).toEqual(expect.any(String));
+      expect(author).toEqual(expect.any(String));
+      expect(topic).toEqual(expect.any(String));
+      expect(likes).toEqual(expect.any(Number));
+      expect(dislikes).toEqual(expect.any(Number));
+      expect(commentCount).toEqual(expect.any(Number));
     });
   });
 });

@@ -41,8 +41,9 @@ export type returnedArticles = {
   created_at: Date;
   title: string;
   article_image_url: string;
-  author: { username: string };
-  topic: { topic_name: string };
+  author: string;
+  topic: string;
   likes: number;
   dislikes: number;
+  commentCount: number;
 };
