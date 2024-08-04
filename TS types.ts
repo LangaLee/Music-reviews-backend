@@ -40,7 +40,6 @@ export type returnedArticles = {
   article_id: number;
   created_at: Date;
   title: string;
-  body: string;
   article_image_url: string;
   author: { username: string };
   topic: { topic_name: string };

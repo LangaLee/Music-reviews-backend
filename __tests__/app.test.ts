@@ -83,13 +83,12 @@ describe("Testing the server", () => {
       articles.forEach((article: returnedArticles) => {
         expect(article.article_id).toEqual(expect.any(Number));
         expect(article.article_image_url).toEqual(expect.any(String));
-        expect(article.author).toEqual(expect.any(String));
-        expect(article.body).toEqual(expect.any(String));
+        expect(article.author.username).toEqual(expect.any(String));
         expect(new Date(article.created_at)).toEqual(expect.any(Date));
         expect(article.dislikes).toEqual(expect.any(Number));
         expect(article.likes).toEqual(expect.any(Number));
         expect(article.title).toEqual(expect.any(String));
-        expect(article.topic).toEqual(expect.any(String));
+        expect(article.topic.topic_name).toEqual(expect.any(String));
       });
     });
   });
