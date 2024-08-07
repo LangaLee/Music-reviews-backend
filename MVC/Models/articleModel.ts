@@ -88,7 +88,9 @@ export async function fetchArticleById(id: number) {
         topic: topic_name,
         commentCount: articleComments,
       };
-    } else return; // error handle here
+    } else {
+      return Promise.reject({ status: 404, msg: "article does not exist" });
+    }
   } finally {
     await client.$disconnect();
   }

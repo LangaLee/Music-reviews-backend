@@ -14,5 +14,7 @@ export async function getArticleById(
     const { article_id } = req.params;
     const article = await fetchArticleById(Number(article_id));
     res.status(200).send({ article });
-  } catch (next) {}
+  } catch (error) {
+    next(error);
+  }
 }

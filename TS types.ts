@@ -1,3 +1,4 @@
+import express from "express";
 export type userDataType = Array<{
   username: string;
   password: string;
@@ -47,3 +48,7 @@ export type returnedArticles = {
   dislikes: number;
   commentCount: number;
 };
+
+export interface errorThrown extends express.Errback {
+  msg: string;
+}

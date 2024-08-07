@@ -123,5 +123,23 @@ describe("Testing the server", () => {
       expect(dislikes).toEqual(expect.any(Number));
       expect(commentCount).toEqual(expect.any(Number));
     });
+    test("400: when passed an invalid id", async () => {
+      const response = await supertest(app).get("/api/articles/one");
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
+    test("404: when passed a valid id that doesn't exist in the db", async () => {
+      const response = await supertest(app).get("/api/articles/10");
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(404);
+      expect(msg).toBe("article does not exist");
+    });
   });
 });
