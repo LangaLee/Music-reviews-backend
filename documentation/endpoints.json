@@ -3,11 +3,67 @@
   "/api/users": {
     "description": "returns an object with all the available users",
     "exampleResponse": {
-      "user_id": "4",
-      "created_at": "2024-07-31T20:20:33.092Z",
-      "profile_pic_url": "'https://facts.net/wp-content/uploads/2023/08/22-facts-about-mordecai-regular-show-1692281421.jpg'",
-      "username": "'mordecai'",
-      "password": "'CJ'"
+      "users": [
+        {
+          "user_id": "4",
+          "created_at": "2024-07-31T20:20:33.092Z",
+          "profile_pic_url": "'https://facts.net/wp-content/uploads/2023/08/22-facts-about-mordecai-regular-show-1692281421.jpg'",
+          "username": "'mordecai'",
+          "password": "'CJ'"
+        }
+      ]
+    }
+  },
+  "/api/topics": {
+    "description": "returns an object with the available topics",
+    "exampleResponse": {
+      "topics": [
+        {
+          "topic_id": 3,
+          "topic_name": "mordecai",
+          "description": "he seem to be heading to dumptown usa again, maybe he need help in his relationships ???"
+        },
+        {
+          "topic_id": 4,
+          "topic_name": "music",
+          "description": "there is an album out there for you"
+        }
+      ]
+    }
+  },
+  "/api/articles": {
+    "description": "returns an object with all available articles",
+    "exampleResponse": {
+      "articles": [
+        {
+          "article_id": 1,
+          "created_at": "2024-08-07T19:35:14.504Z",
+          "title": "How Rigby is progressively getting lazy",
+          "article_image_url": "https://ih1.redbubble.net/image.5221779544.0913/flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg",
+          "likes": 4,
+          "dislikes": 2,
+          "commentCount": 0,
+          "author": "high-5",
+          "topic": "rigby"
+        }
+      ]
+    }
+  },
+  "/api/articles/:article_id": {
+    "description": "returns the article with that id",
+    "exampleResponse": {
+      "article": {
+        "article_id": 1,
+        "created_at": "2024-08-07T19:37:39.439Z",
+        "title": "How Rigby is progressively getting lazy",
+        "body": "Have you recently spotted  Rigby doing any work ? I haven\"t. The guy can\"t start a single job and finish it. Why is he still hired?? Maybe he would be better in a different park not this one. Either Benson fires him or I will have to talk to Pop\"s dad.",
+        "article_image_url": "https://ih1.redbubble.net/image.5221779544.0913/flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg",
+        "likes": 4,
+        "dislikes": 2,
+        "author": "high-5",
+        "topic": "rigby",
+        "commentCount": 0
+      }
     }
   }
 }
