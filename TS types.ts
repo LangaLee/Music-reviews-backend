@@ -51,4 +51,12 @@ export type returnedArticles = {
 
 export interface errorThrown extends express.Errback {
   msg: string;
+  status: number;
 }
+
+export type returnedComments = {
+  article_id: number;
+  body: string;
+  author: string;
+  created_at: Date;
+};

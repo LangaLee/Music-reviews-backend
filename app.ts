@@ -7,6 +7,7 @@ import {
   getArticleById,
 } from "./MVC/Controllers/articleControllers";
 import { errorThrown } from "./TS types";
+import { getComments } from "./MVC/Controllers/commentControllers";
 const app = express();
 
 app.get("/api/users", getUsers);
@@ -18,6 +19,8 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id", getArticleById);
+
+app.get("/api/articles/:article_id/comments", getComments);
 
 app.get("*", (req, res) => {
   res.status(500).send({ msg: "Endpoint not found" });
@@ -34,7 +37,7 @@ app.use(
       res.status(400).send({ msg: "Bad request" });
     }
     if (error.msg) {
-      res.status(404).send({ msg: error.msg });
+      res.status(error.status).send({ msg: error.msg });
     }
   }
 );

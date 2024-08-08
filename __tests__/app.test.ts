@@ -1,7 +1,12 @@
 import { beforeAll, beforeEach, describe, expect, test } from "@jest/globals";
 import app from "../app";
 import supertest from "supertest";
-import { returnedUsers, returnedTopics, returnedArticles } from "../TS types";
+import {
+  returnedUsers,
+  returnedTopics,
+  returnedArticles,
+  returnedComments,
+} from "../TS types";
 import fs from "fs/promises";
 import seedData from "../prisma/seed/seed";
 import userData from "../prisma/data/userData";
@@ -12,7 +17,7 @@ beforeEach(() => {
   return seedData(userData, topicData, articleData, commentData);
 });
 describe("Testing the server", () => {
-  describe("/api/docs", () => {
+  describe("GET /api/docs", () => {
     test("200: returns an object describing the endpoints", async () => {
       const response = await supertest(app).get("/api/docs");
       const documentation = await fs.readFile(
@@ -27,7 +32,7 @@ describe("Testing the server", () => {
       expect(docs).toEqual(documentation);
     });
   });
-  describe("/api/users", () => {
+  describe("GET /api/users", () => {
     test("200: returns users on a key of users", async () => {
       const response = await supertest(app).get("/api/users");
       const {
@@ -44,7 +49,7 @@ describe("Testing the server", () => {
       });
     });
   });
-  describe("/api/notFound", () => {
+  describe("GET /api/notFound", () => {
     test("500: returns and object with a key of msg", async () => {
       const response = await supertest(app).get("/api/lee");
       const {
@@ -55,7 +60,7 @@ describe("Testing the server", () => {
       expect(msg).toEqual("Endpoint not found");
     });
   });
-  describe("/api/topics", () => {
+  describe("GET /api/topics", () => {
     test("200: returns available topics", async () => {
       const response = await supertest(app).get("/api/topics");
       const {
@@ -71,7 +76,7 @@ describe("Testing the server", () => {
       });
     });
   });
-  describe("/api/articles", () => {
+  describe("GET /api/articles", () => {
     test("200: returns all available articles", async () => {
       const response = await supertest(app).get("/api/articles");
       const {
@@ -93,7 +98,7 @@ describe("Testing the server", () => {
       });
     });
   });
-  describe("/api/articles/:article_id", () => {
+  describe("GET /api/articles/:article_id", () => {
     test("200: returns the article with that id", async () => {
       const response = await supertest(app).get("/api/articles/1");
       const {
@@ -134,6 +139,52 @@ describe("Testing the server", () => {
     });
     test("404: when passed a valid id that doesn't exist in the db", async () => {
       const response = await supertest(app).get("/api/articles/10");
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(404);
+      expect(msg).toBe("article does not exist");
+    });
+  });
+  describe("GET /api/articles/:article_id/comments", () => {
+    test("200: returns all the comments under that article", async () => {
+      const response = await supertest(app).get("/api/articles/3/comments");
+      const {
+        status,
+        body: { comments },
+      } = response;
+      expect(status).toBe(200);
+      expect(comments.length).toBe(3);
+      comments.forEach((comment: returnedComments) => {
+        expect(comment.article_id).toBe(3);
+        expect(comment.body).toEqual(expect.any(String));
+        expect(comment.author).toEqual(expect.any(String));
+        expect(new Date(comment.created_at)).toEqual(expect.any(Date));
+      });
+    });
+    test("200: returns an empty array for an article without comments", async () => {
+      const response = await supertest(app).get("/api/articles/1/comments");
+      const {
+        status,
+        body: { comments },
+      } = response;
+      expect(status).toBe(200);
+      expect(comments).toHaveLength(0);
+    });
+    test("400: returns bad request when passed an invalid article_id", async () => {
+      const response = await supertest(app).get(
+        "/api/articles/invalid/comments"
+      );
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("invalid article id");
+    });
+    test("404: returns when passed a valid id but the article doesn't exists", async () => {
+      const response = await supertest(app).get("/api/articles/10/comments");
       const {
         status,
         body: { msg },
