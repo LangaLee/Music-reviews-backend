@@ -89,6 +89,7 @@ export async function fetchArticleById(id: number) {
         commentCount: articleComments,
       };
     } else {
+      await client.$disconnect();
       return Promise.reject({ status: 404, msg: "article does not exist" });
     }
   } finally {
