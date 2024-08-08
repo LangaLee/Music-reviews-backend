@@ -49,6 +49,26 @@ describe("Testing the server", () => {
       });
     });
   });
+  describe("POST /api/users", () => {
+    test("201: returns the posted user", async () => {
+      const userToPost = {
+        username: "skips",
+        password: "mona",
+        profile_pic_url:
+          "https://regularshowwiki.weebly.com/uploads/7/4/1/1/7411048/2193739_orig.png",
+      };
+      const response = await supertest(app).post("/api/users").send(userToPost);
+      const {
+        status,
+        body: { user },
+      } = response;
+      expect(status).toBe(201);
+      expect(user.username).toBe("skips");
+      expect(user.id).toBe(5);
+      expect(user.profile_pic_url).toBe(userToPost.profile_pic_url);
+      expect(new Date(user.created_at)).toEqual(expect.any(Date));
+    });
+  });
   describe("GET /api/notFound", () => {
     test("500: returns and object with a key of msg", async () => {
       const response = await supertest(app).get("/api/lee");
