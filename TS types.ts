@@ -1,12 +1,7 @@
 import express from "express";
-export type userDataType = Array<{
-  username: string;
-  password: string;
-  profile_pic_url: string;
-}>;
 
+export type userDataType = Array<user>;
 export type topicDataType = Array<{ topic_name: string; description: string }>;
-
 export type articleDataType = Array<{
   title: string;
   body: string;
@@ -59,4 +54,9 @@ export type returnedComments = {
   body: string;
   author: string;
   created_at: Date;
+};
+export type user = {
+  username: string;
+  password: string;
+  profile_pic_url: string;
 };

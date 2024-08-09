@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers } from "./MVC/Controllers/userControllers";
+import { getUsers, postUser } from "./MVC/Controllers/userControllers";
 import getDoc from "./MVC/Controllers/docControllers";
 import { getTopics } from "./MVC/Controllers/topicControllers";
 import {
@@ -9,8 +9,10 @@ import {
 import { errorThrown } from "./TS types";
 import { getComments } from "./MVC/Controllers/commentControllers";
 const app = express();
-
+app.use(express.json());
 app.get("/api/users", getUsers);
+
+app.post("/api/users", postUser);
 
 app.get("/api/docs", getDoc);
 

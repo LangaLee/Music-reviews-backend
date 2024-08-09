@@ -64,7 +64,7 @@ describe("Testing the server", () => {
       } = response;
       expect(status).toBe(201);
       expect(user.username).toBe("skips");
-      expect(user.id).toBe(5);
+      expect(user.user_id).toBe(5);
       expect(user.profile_pic_url).toBe(userToPost.profile_pic_url);
       expect(new Date(user.created_at)).toEqual(expect.any(Date));
     });
