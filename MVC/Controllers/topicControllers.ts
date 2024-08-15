@@ -14,5 +14,7 @@ export async function postTopic(
     const { body } = req;
     const topic = await insertTopic(body);
     res.status(201).send({ topic });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 }

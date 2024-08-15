@@ -131,6 +131,18 @@ describe("Testing the server", () => {
         description: "taking a look at a section that makes the anime effect",
       });
     });
+    test("400: when posting without the required fields", async () => {
+      const topicToInsert = { topic_name: "lol" };
+      const response = await supertest(app)
+        .post("/api/topics")
+        .send(topicToInsert);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
   });
   describe("GET /api/articles", () => {
     test("200: returns all available articles", async () => {
