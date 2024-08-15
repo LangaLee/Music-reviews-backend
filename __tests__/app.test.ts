@@ -68,6 +68,20 @@ describe("Testing the server", () => {
       expect(user.profile_pic_url).toBe(userToPost.profile_pic_url);
       expect(new Date(user.created_at)).toEqual(expect.any(Date));
     });
+    test("400: when posting without all the required fields", async () => {
+      const userToPost = {
+        password: "skips",
+        profile_pic_url:
+          "https://regularshowwiki.weebly.com/uploads/7/4/1/1/7411048/2193739_orig.png",
+      };
+      const response = await supertest(app).post("/api/users").send(userToPost);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
   });
   describe("GET /api/notFound", () => {
     test("500: returns and object with a key of msg", async () => {
