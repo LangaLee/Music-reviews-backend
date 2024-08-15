@@ -13,6 +13,7 @@ import userData from "../prisma/data/userData";
 import commentData from "../prisma/data/commentData";
 import articleData from "../prisma/data/articleData";
 import topicData from "../prisma/data/topicData";
+import { response } from "express";
 beforeEach(() => {
   return seedData(userData, topicData, articleData, commentData);
 });
@@ -107,6 +108,27 @@ describe("Testing the server", () => {
         expect(topic.topic_id).toEqual(expect.any(Number));
         expect(topic.topic_name).toEqual(expect.any(String));
         expect(topic.description).toEqual(expect.any(String));
+      });
+    });
+  });
+  describe("POST /api/topics", () => {
+    test("201: returns the posted topic", async () => {
+      const topicToPost = {
+        topic_name: "Anime Ops & Eds",
+        description: "taking a look at a section that makes the anime effect",
+      };
+      const response = await supertest(app)
+        .post("/api/topics")
+        .send(topicToPost);
+      const {
+        status,
+        body: { topic },
+      } = response;
+      expect(status).toBe(201);
+      expect(topic).toEqual({
+        topic_id: 5,
+        topic_name: "Anime Ops & Eds",
+        description: "taking a look at a section that makes the anime effect",
       });
     });
   });

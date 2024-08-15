@@ -1,6 +1,6 @@
 import express from "express";
 
-export type userDataType = Array<user>;
+export type userDataType = Array<userToInsert>;
 export type topicDataType = Array<{ topic_name: string; description: string }>;
 export type articleDataType = Array<{
   title: string;
@@ -55,8 +55,13 @@ export type returnedComments = {
   author: string;
   created_at: Date;
 };
-export type user = {
+export type userToInsert = {
   username: string;
   password: string;
   profile_pic_url: string;
+};
+
+export type topicToInsert = {
+  topic_name: string;
+  description: string;
 };

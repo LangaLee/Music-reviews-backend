@@ -1,7 +1,7 @@
 import express from "express";
 import { getUsers, postUser } from "./MVC/Controllers/userControllers";
 import getDoc from "./MVC/Controllers/docControllers";
-import { getTopics } from "./MVC/Controllers/topicControllers";
+import { getTopics, postTopic } from "./MVC/Controllers/topicControllers";
 import {
   getArticles,
   getArticleById,
@@ -10,6 +10,7 @@ import { errorThrown } from "./TS types";
 import { getComments } from "./MVC/Controllers/commentControllers";
 const app = express();
 app.use(express.json());
+
 app.get("/api/users", getUsers);
 
 app.post("/api/users", postUser);
@@ -17,6 +18,8 @@ app.post("/api/users", postUser);
 app.get("/api/docs", getDoc);
 
 app.get("/api/topics", getTopics);
+
+app.post("/api/topics", postTopic);
 
 app.get("/api/articles", getArticles);
 

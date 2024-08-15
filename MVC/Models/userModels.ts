@@ -1,4 +1,4 @@
-import { user } from "../../TS types";
+import { userToInsert } from "../../TS types";
 import client from "./prismaClient";
 
 export async function findUsers() {
@@ -10,7 +10,7 @@ export async function findUsers() {
   }
 }
 
-export async function insertUser(user: user) {
+export async function insertUser(user: userToInsert) {
   try {
     const returnedUser = await client.users.createManyAndReturn({
       data: [user],
