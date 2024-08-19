@@ -1,4 +1,4 @@
-import { returnedComments } from "../../TS types";
+import { commentDataType, returnedComments } from "../../TS types";
 import { fetchArticleById } from "./articleModel";
 import client from "./prismaClient";
 export async function fetchComments(article_id: number) {
@@ -22,6 +22,17 @@ export async function fetchComments(article_id: number) {
       return { article_id, body, created_at, author: username };
     });
     return commentsToSend;
+  } finally {
+    await client.$disconnect();
+  }
+}
+
+export async function insertComment(commentToInsert: commentDataType) {
+  try {
+    const comment = await client.comments.createManyAndReturn({
+      data: commentToInsert,
+    });
+    return comment[0];
   } finally {
     await client.$disconnect();
   }

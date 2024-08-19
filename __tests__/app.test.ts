@@ -261,4 +261,70 @@ describe("Testing the server", () => {
       expect(msg).toBe("article does not exist");
     });
   });
+  describe("POST /api/articles/comments", () => {
+    test("201: returns the posted comment", async () => {
+      const commentToPost = {
+        author_id: 4,
+        body: "its been a while since I listened to that EP, I should go back to it",
+        article_id: 3,
+      };
+      const response = await supertest(app)
+        .post("/api/articles/comments")
+        .send(commentToPost);
+      const {
+        status,
+        body: { comment },
+      } = response;
+      expect(status).toBe(201);
+      expect(comment.article_id).toBe(3);
+      expect(comment.body).toBe(commentToPost.body);
+      expect(comment.comment_id).toBe(4);
+      expect(new Date(comment.created_at)).toEqual(expect.any(Date));
+      expect(comment.author_id).toBe(4);
+    });
+    test("400: when attempting to post with missing fields", async () => {
+      const commentToPost = { author_id: 2, body: "no article_id" };
+      const response = await supertest(app)
+        .post("/api/articles/comments")
+        .send(commentToPost);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
+    test("400: posting a comment with an author_id that doesn't exist in the db", async () => {
+      const commentToPost = {
+        author_id: 9,
+        body: "no article_id",
+        article_id: 3,
+      };
+      const response = await supertest(app)
+        .post("/api/articles/comments")
+        .send(commentToPost);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
+    test("400: posting a comment with an article_id that doesn't exist in the db", async () => {
+      const commentToPost = {
+        author_id: 2,
+        body: "non existent article_id",
+        article_id: 50,
+      };
+      const response = await supertest(app)
+        .post("/api/articles/comments")
+        .send(commentToPost);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
+  });
 });

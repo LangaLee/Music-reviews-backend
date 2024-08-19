@@ -7,7 +7,7 @@ import {
   getArticleById,
 } from "./MVC/Controllers/articleControllers";
 import { errorThrown } from "./TS types";
-import { getComments } from "./MVC/Controllers/commentControllers";
+import { getComments, postComment } from "./MVC/Controllers/commentControllers";
 const app = express();
 app.use(express.json());
 
@@ -26,6 +26,8 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/articles/:article_id/comments", getComments);
+
+app.post("/api/articles/comments", postComment);
 
 app.get("*", (req, res) => {
   res.status(500).send({ msg: "Endpoint not found" });
