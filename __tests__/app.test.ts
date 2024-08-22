@@ -166,6 +166,36 @@ describe("Testing the server", () => {
       });
     });
   });
+  describe("POST /api/articles", () => {
+    test("201: returns the posted article", async () => {
+      const articleToPost = {
+        title: "listening to new music",
+        body: "listening to new music can be challenging epecially when the genre is new to you and is no an easy listen. But most times it usually pays off. As the years have went by we have become reliant on people recommending things for us and critics telling us whats good and whats not. We have lost that sense of adventure.",
+        article_image_url:
+          "https://lh3.googleusercontent.com/xdvVADAcKur3p70uPFbMjIojgvgMomG762aHBMQSM9ry4rmWx8ft5bDt2z7ZCPLv62BviVHCt797IPCeRw=w544-h544-l90-rj",
+        author_id: 3,
+        topic_id: 4,
+        likes: 0,
+        dislikes: 0,
+      };
+      const response = await supertest(app)
+        .post("/api/articles")
+        .send(articleToPost);
+      const {
+        status,
+        body: { article },
+      } = response;
+      expect(status).toBe(201);
+      expect(article.article_id).toBe(4);
+      expect(article.title).toBe(articleToPost.title);
+      expect(article.body).toBe(articleToPost.body);
+      expect(article.article_image_url).toBe(articleToPost.article_image_url);
+      expect(article.author_id).toBe(3);
+      expect(article.topic_id).toBe(4);
+      expect(article.likes).toBe(0);
+      expect(article.dislikes).toBe(0);
+    });
+  });
   describe("GET /api/articles/:article_id", () => {
     test("200: returns the article with that id", async () => {
       const response = await supertest(app).get("/api/articles/1");

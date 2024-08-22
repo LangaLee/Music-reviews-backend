@@ -1,4 +1,4 @@
-import { returnedArticles } from "../../TS types";
+import { article, returnedArticles } from "../../TS types";
 import client from "./prismaClient";
 
 export async function fetchArticles() {
@@ -94,5 +94,16 @@ export async function fetchArticleById(id: number) {
     }
   } finally {
     await client.$disconnect();
+  }
+}
+
+export async function insertArticle(articleToInsert: article) {
+  try {
+    const articles = await client.articles.createManyAndReturn({
+      data: articleToInsert,
+    });
+    return articles[0];
+  } finally {
+    client.$disconnect();
   }
 }

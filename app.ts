@@ -5,6 +5,7 @@ import { getTopics, postTopic } from "./MVC/Controllers/topicControllers";
 import {
   getArticles,
   getArticleById,
+  postArticle,
 } from "./MVC/Controllers/articleControllers";
 import { errorThrown } from "./TS types";
 import { getComments, postComment } from "./MVC/Controllers/commentControllers";
@@ -24,6 +25,8 @@ app.post("/api/topics", postTopic);
 app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id", getArticleById);
+
+app.post("/api/articles", postArticle);
 
 app.get("/api/articles/:article_id/comments", getComments);
 

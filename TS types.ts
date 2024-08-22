@@ -2,22 +2,21 @@ import express from "express";
 
 export type userDataType = Array<userToInsert>;
 export type topicDataType = Array<{ topic_name: string; description: string }>;
-export type articleDataType = Array<{
-  title: string;
-  body: string;
-  article_image_url: string;
-  author_id: number;
-  topic_id: number; // what have I done to need topic and topic Id ??? reapeating data ??
-  likes: number;
-  dislikes: number;
-}>;
-
+export type articleDataType = Array<article>;
 export type commentDataType = Array<{
   author_id: number;
   body: string;
   article_id: number;
 }>;
-
+export type article = {
+  title: string;
+  body: string;
+  article_image_url: string;
+  author_id: number;
+  topic_id: number;
+  likes: number;
+  dislikes: number;
+};
 export type returnedUsers = {
   user_id: number;
   created_at: Date;

@@ -1,4 +1,8 @@
-import { fetchArticles, fetchArticleById } from "../Models/articleModel";
+import {
+  fetchArticles,
+  fetchArticleById,
+  insertArticle,
+} from "../Models/articleModel";
 import express from "express";
 export async function getArticles(req: express.Request, res: express.Response) {
   const articles = await fetchArticles();
@@ -17,4 +21,16 @@ export async function getArticleById(
   } catch (error) {
     next(error);
   }
+}
+
+export async function postArticle(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) {
+  try {
+    const { body } = req;
+    const article = await insertArticle(body);
+    res.status(201).send({ article });
+  } catch (error) {}
 }
