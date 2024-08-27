@@ -32,5 +32,7 @@ export async function postArticle(
     const { body } = req;
     const article = await insertArticle(body);
     res.status(201).send({ article });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 }
