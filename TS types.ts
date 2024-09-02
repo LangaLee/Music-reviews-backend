@@ -8,6 +8,11 @@ export type commentDataType = Array<{
   body: string;
   article_id: number;
 }>;
+export type likesDataType = Array<{
+  user_id: number;
+  article_id: number;
+  value: number;
+}>;
 export type article = {
   title: string;
   body: string;

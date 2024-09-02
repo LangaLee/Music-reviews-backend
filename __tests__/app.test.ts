@@ -14,8 +14,9 @@ import commentData from "../prisma/data/commentData";
 import articleData from "../prisma/data/articleData";
 import topicData from "../prisma/data/topicData";
 import { response } from "express";
+import likesData from "../prisma/data/likesData";
 beforeEach(() => {
-  return seedData(userData, topicData, articleData, commentData);
+  return seedData(userData, topicData, articleData, commentData, likesData);
 });
 describe("Testing the server", () => {
   describe("GET /api/docs", () => {
@@ -91,7 +92,7 @@ describe("Testing the server", () => {
         status,
         body: { msg },
       } = response;
-      expect(status).toEqual(500);
+      expect(status).toEqual(404);
       expect(msg).toEqual("Endpoint not found");
     });
   });

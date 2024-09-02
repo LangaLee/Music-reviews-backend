@@ -33,7 +33,7 @@ app.get("/api/articles/:article_id/comments", getComments);
 app.post("/api/articles/comments", postComment);
 
 app.get("*", (req, res) => {
-  res.status(500).send({ msg: "Endpoint not found" });
+  res.status(404).send({ msg: "Endpoint not found" });
 });
 
 app.use(

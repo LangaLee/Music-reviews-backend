@@ -5,6 +5,7 @@ import {
   commentDataType,
   topicDataType,
   userDataType,
+  likesDataType,
 } from "../../TS types";
 
 const client = new PrismaClient();
@@ -42,17 +43,23 @@ async function insertComments(comments: commentDataType) {
   await client.comments.createMany({ data: comments });
 }
 
+async function insertLikes(likes: likesDataType) {
+  await client.userLikes.createMany({ data: likes });
+}
+
 async function seedData(
   users: userDataType,
   topics: topicDataType,
   articles: articleDataType,
-  comments: commentDataType
+  comments: commentDataType,
+  likes: likesDataType
 ) {
   await deleteTables();
   await insertUsers(users);
   await insertTopics(topics);
   await insertArticles(articles);
   await insertComments(comments);
+  await insertLikes(likes);
 }
 
 export default seedData;
