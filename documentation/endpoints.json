@@ -74,7 +74,7 @@
       "dislikes": "number"
     }
   },
-  "/api/articles/:article_id": {
+  "GET /api/articles/:article_id": {
     "description": "returns the article with that id",
     "exampleResponse": {
       "article": {
@@ -91,7 +91,7 @@
       }
     }
   },
-  "/api/articles/:article_id/comments": {
+  "GET /api/articles/:article_id/comments": {
     "description": "returns all the availabe comments from that articles",
     "exampleResponse": {
       "comments": [
@@ -114,6 +114,14 @@
           "author": "string"
         }
       ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "posts a new comment",
+    "requiredData": {
+      "author_id": "number",
+      "body": "string",
+      "article_id": "number"
     }
   }
 }
