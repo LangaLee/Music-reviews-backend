@@ -44,7 +44,6 @@ describe("Testing the server", () => {
       expect(status).toEqual(200);
       expect(users.length).toEqual(4);
       users.forEach((user: returnedUsers) => {
-        expect(user.user_id).toEqual(expect.any(Number));
         expect(new Date(user.created_at)).toEqual(expect.any(Date));
         expect(user.profile_pic_url).toEqual(expect.any(String));
         expect(user.username).toEqual(expect.any(String));

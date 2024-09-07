@@ -1,10 +1,14 @@
-import { userToInsert } from "../../TS types";
+import { returnedUsers, userToInsert } from "../../TS types";
 import client from "./prismaClient";
 
 export async function findUsers() {
   try {
     const users = await client.users.findMany();
-    return users;
+    const usersToReturn: Array<returnedUsers> = users.map((user) => {
+      const { created_at, profile_pic_url, username } = user;
+      return { created_at, username, profile_pic_url };
+    });
+    return usersToReturn;
   } finally {
     await client.$disconnect();
   }
