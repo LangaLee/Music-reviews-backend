@@ -6,6 +6,7 @@ import {
   returnedTopics,
   returnedArticles,
   returnedComments,
+  like,
 } from "../TS types";
 import fs from "fs/promises";
 import seedData from "../prisma/seed/seed";
@@ -13,7 +14,6 @@ import userData from "../prisma/data/userData";
 import commentData from "../prisma/data/commentData";
 import articleData from "../prisma/data/articleData";
 import topicData from "../prisma/data/topicData";
-import { response } from "express";
 import likesData from "../prisma/data/likesData";
 beforeEach(() => {
   return seedData(userData, topicData, articleData, commentData, likesData);
@@ -395,6 +395,49 @@ describe("Testing the server", () => {
       } = response;
       expect(status).toBe(400);
       expect(msg).toBe("Bad request");
+    });
+  });
+  describe("GET /api/likes/:user_id", () => {
+    test("200: returns the users likes data", async () => {
+      const response = await supertest(app).get("/api/likes/1");
+      const {
+        status,
+        body: { likes },
+      } = response;
+      expect(status).toBe(200);
+      expect(likes.length).toBe(2);
+      likes.forEach((like: like) => {
+        expect(like.user_id).toBe(1);
+        expect(like.article_id).toEqual(expect.any(Number));
+        expect(like.value).toEqual(expect.any(Number));
+      });
+    });
+    test("200: returns an empty array if the the user doesn't have any likes", async () => {
+      const response = await supertest(app).get("/api/likes/2");
+      const {
+        status,
+        body: { likes },
+      } = response;
+      expect(status).toBe(200);
+      expect(likes).toEqual([]);
+    });
+    test("400: when passed an invalid user_id", async () => {
+      const response = await supertest(app).get("/api/likes/one");
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
+    test("404: when passed a user_id that doesn't exist in the db", async () => {
+      const response = await supertest(app).get("/api/likes/8");
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(404);
+      expect(msg).toBe("User does not exist");
     });
   });
 });

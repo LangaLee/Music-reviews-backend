@@ -9,6 +9,7 @@ import {
 } from "./MVC/Controllers/articleControllers";
 import { errorThrown } from "./TS types";
 import { getComments, postComment } from "./MVC/Controllers/commentControllers";
+import { getLikes } from "./MVC/Controllers/likeControllers";
 const app = express();
 app.use(express.json());
 
@@ -31,6 +32,8 @@ app.post("/api/articles", postArticle);
 app.get("/api/articles/:article_id/comments", getComments);
 
 app.post("/api/articles/comments", postComment);
+
+app.get("/api/likes/:user_id", getLikes);
 
 app.get("*", (req, res) => {
   res.status(404).send({ msg: "Endpoint not found" });

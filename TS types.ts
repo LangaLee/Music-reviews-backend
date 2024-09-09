@@ -8,11 +8,7 @@ export type commentDataType = Array<{
   body: string;
   article_id: number;
 }>;
-export type likesDataType = Array<{
-  user_id: number;
-  article_id: number;
-  value: number;
-}>;
+export type likesDataType = Array<like>;
 export type article = {
   title: string;
   body: string;
@@ -21,6 +17,11 @@ export type article = {
   topic_id: number;
   likes: number;
   dislikes: number;
+};
+export type like = {
+  user_id: number;
+  article_id: number;
+  value: number;
 };
 export type returnedUsers = {
   created_at: Date;
