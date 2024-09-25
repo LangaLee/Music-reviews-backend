@@ -62,6 +62,6 @@ model UserLikes {
   user       Users    @relation(fields: [user_id], references: [user_id])
   user_id    Int
   article    Articles @relation(fields: [article_id], references: [article_id])
-  article_id Int
+  article_id Int      @unique
   value      Int
 }

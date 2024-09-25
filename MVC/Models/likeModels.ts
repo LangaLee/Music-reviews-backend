@@ -1,4 +1,4 @@
-import { likesDataType } from "../../TS types";
+import { like, likesDataType } from "../../TS types";
 import client from "./prismaClient";
 
 export async function fetchLikes(user_id: number) {
@@ -17,5 +17,20 @@ export async function fetchLikes(user_id: number) {
     return likesToReturn;
   } finally {
     client.$disconnect();
+  }
+}
+
+export async function insertLikes(likeData: like) {
+  try {
+    if (likeData.value !== 1 && likeData.value !== -1)
+      return Promise.reject({
+        status: 400,
+        msg: "likes value can only be 1 or -1",
+      });
+    const like = await client.userLikes.createManyAndReturn({ data: likeData });
+
+    return like[0];
+  } finally {
+    await client.$disconnect();
   }
 }

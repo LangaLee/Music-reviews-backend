@@ -440,4 +440,43 @@ describe("Testing the server", () => {
       expect(msg).toBe("User does not exist");
     });
   });
+  describe("POST /api/likes", () => {
+    test("201: posts the likes object to the database", async () => {
+      const likeObjectToPost = { user_id: 1, article_id: 3, value: 1 };
+      const response = await supertest(app)
+        .post("/api/likes")
+        .send(likeObjectToPost);
+
+      const {
+        status,
+        body: { like },
+      } = response;
+      expect(status).toBe(201);
+      expect(like).toEqual({ like_id: 3, user_id: 1, article_id: 3, value: 1 });
+    });
+    test("400: when trying to post a like to an article that already has a like by that user", async () => {
+      const likeObjectToPost = { user_id: 1, article_id: 1, value: 1 };
+      const response = await supertest(app)
+        .post("/api/likes")
+        .send(likeObjectToPost);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
+    });
+    test("400: when the like object posted has a value that is not 1 or -1", async () => {
+      const likeObjectToPost = { user_id: 1, article_id: 3, value: 2 };
+      const response = await supertest(app)
+        .post("/api/likes")
+        .send(likeObjectToPost);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("likes value can only be 1 or -1");
+    });
+  });
 });
