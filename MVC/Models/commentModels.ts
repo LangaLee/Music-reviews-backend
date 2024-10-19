@@ -18,8 +18,9 @@ export async function fetchComments(article_id: number) {
         body,
         created_at,
         author: { username },
+        comment_id,
       } = comment;
-      return { article_id, body, created_at, author: username };
+      return { article_id, body, created_at, author: username, comment_id };
     });
     return commentsToSend;
   } finally {
