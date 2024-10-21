@@ -24,6 +24,7 @@ export type like = {
   value: number;
 };
 export type returnedUsers = {
+  user_id: number;
   created_at: Date;
   profile_pic_url: string;
   username: string;
@@ -54,6 +55,7 @@ export interface errorThrown extends express.Errback {
 
 export type returnedComments = {
   article_id: number;
+  comment_id: number;
   body: string;
   author: string;
   created_at: Date;

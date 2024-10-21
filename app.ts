@@ -57,3 +57,10 @@ app.use(
   }
 );
 export default app;
+
+/* 
+Enpoints to add 
+delete /api/comments/:comment_id
+delete /api/articles/:article_id
+patch /api/likes/:user_id/:like_id
+*/

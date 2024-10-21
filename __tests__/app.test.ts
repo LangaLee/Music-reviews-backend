@@ -30,7 +30,7 @@ describe("Testing the server", () => {
         status,
         body: { docs },
       } = response;
-      expect(status).toEqual(200);
+      expect(status).toBe(200);
       expect(docs).toEqual(documentation);
     });
   });
@@ -41,12 +41,13 @@ describe("Testing the server", () => {
         body: { users },
         status,
       } = response;
-      expect(status).toEqual(200);
-      expect(users.length).toEqual(4);
+      expect(status).toBe(200);
+      expect(users.length).toBe(4);
       users.forEach((user: returnedUsers) => {
+        expect(typeof user.user_id).toBe("number");
         expect(new Date(user.created_at)).toEqual(expect.any(Date));
-        expect(user.profile_pic_url).toEqual(expect.any(String));
-        expect(user.username).toEqual(expect.any(String));
+        expect(typeof user.profile_pic_url).toBe("string");
+        expect(typeof user.username).toBe("string");
       });
     });
   });
@@ -85,14 +86,14 @@ describe("Testing the server", () => {
     });
   });
   describe("GET /api/notFound", () => {
-    test("500: returns and object with a key of msg", async () => {
+    test("404: returns and object with a key of msg", async () => {
       const response = await supertest(app).get("/api/lee");
       const {
         status,
         body: { msg },
       } = response;
-      expect(status).toEqual(404);
-      expect(msg).toEqual("Endpoint not found");
+      expect(status).toBe(404);
+      expect(msg).toBe("Endpoint not found");
     });
   });
   describe("GET /api/topics", () => {
@@ -102,12 +103,12 @@ describe("Testing the server", () => {
         status,
         body: { topics },
       } = response;
-      expect(status).toEqual(200);
-      expect(topics.length).toEqual(4);
+      expect(status).toBe(200);
+      expect(topics.length).toBe(4);
       topics.forEach((topic: returnedTopics) => {
-        expect(topic.topic_id).toEqual(expect.any(Number));
-        expect(topic.topic_name).toEqual(expect.any(String));
-        expect(topic.description).toEqual(expect.any(String));
+        expect(typeof topic.topic_id).toBe("number");
+        expect(typeof topic.topic_name).toBe("string");
+        expect(typeof topic.description).toBe("string");
       });
     });
   });
@@ -151,18 +152,18 @@ describe("Testing the server", () => {
         status,
         body: { articles },
       } = response;
-      expect(status).toEqual(200);
-      expect(articles.length).toEqual(3);
+      expect(status).toBe(200);
+      expect(articles.length).toBe(3);
       articles.forEach((article: returnedArticles) => {
-        expect(article.article_id).toEqual(expect.any(Number));
-        expect(article.article_image_url).toEqual(expect.any(String));
-        expect(article.author).toEqual(expect.any(String));
+        expect(typeof article.article_id).toBe("number");
+        expect(typeof article.article_image_url).toBe("string");
+        expect(typeof article.author).toBe("string");
         expect(new Date(article.created_at)).toEqual(expect.any(Date));
-        expect(article.dislikes).toEqual(expect.any(Number));
-        expect(article.likes).toEqual(expect.any(Number));
-        expect(article.title).toEqual(expect.any(String));
-        expect(article.topic).toEqual(expect.any(String));
-        expect(article.commentCount).toEqual(expect.any(Number));
+        expect(typeof article.dislikes).toBe("number");
+        expect(typeof article.likes).toBe("number");
+        expect(typeof article.title).toBe("string");
+        expect(typeof article.topic).toBe("string");
+        expect(typeof article.commentCount).toBe("number");
       });
     });
   });
@@ -257,14 +258,14 @@ describe("Testing the server", () => {
       } = response;
       expect(status).toBe(200);
       expect(article_id).toBe(1);
-      expect(article_image_url).toEqual(expect.any(String));
-      expect(body).toEqual(expect.any(String));
-      expect(title).toEqual(expect.any(String));
-      expect(author).toEqual(expect.any(String));
-      expect(topic).toEqual(expect.any(String));
-      expect(likes).toEqual(expect.any(Number));
-      expect(dislikes).toEqual(expect.any(Number));
-      expect(commentCount).toEqual(expect.any(Number));
+      expect(typeof article_image_url).toBe("string");
+      expect(typeof body).toBe("string");
+      expect(typeof title).toBe("string");
+      expect(typeof author).toBe("string");
+      expect(typeof topic).toBe("string");
+      expect(typeof likes).toBe("number");
+      expect(typeof dislikes).toBe("number");
+      expect(typeof commentCount).toBe("number");
     });
     test("400: when passed an invalid id", async () => {
       const response = await supertest(app).get("/api/articles/one");
@@ -296,8 +297,9 @@ describe("Testing the server", () => {
       expect(comments.length).toBe(3);
       comments.forEach((comment: returnedComments) => {
         expect(comment.article_id).toBe(3);
-        expect(comment.body).toEqual(expect.any(String));
-        expect(comment.author).toEqual(expect.any(String));
+        expect(typeof comment.comment_id).toBe("number");
+        expect(typeof comment.body).toBe("string");
+        expect(typeof comment.author).toBe("string");
         expect(new Date(comment.created_at)).toEqual(expect.any(Date));
       });
     });
@@ -408,8 +410,8 @@ describe("Testing the server", () => {
       expect(likes.length).toBe(2);
       likes.forEach((like: like) => {
         expect(like.user_id).toBe(1);
-        expect(like.article_id).toEqual(expect.any(Number));
-        expect(like.value).toEqual(expect.any(Number));
+        expect(typeof like.article_id).toBe("number");
+        expect(typeof like.value).toBe("number");
       });
     });
     test("200: returns an empty array if the the user doesn't have any likes", async () => {

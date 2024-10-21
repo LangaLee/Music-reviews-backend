@@ -5,8 +5,8 @@ export async function findUsers() {
   try {
     const users = await client.users.findMany();
     const usersToReturn: Array<returnedUsers> = users.map((user) => {
-      const { created_at, profile_pic_url, username } = user;
-      return { created_at, username, profile_pic_url };
+      const { created_at, profile_pic_url, username ,user_id} = user;
+      return { created_at, username, profile_pic_url ,user_id};
     });
     return usersToReturn;
   } finally {
