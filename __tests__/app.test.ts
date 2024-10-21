@@ -15,8 +15,8 @@ import commentData from "../prisma/data/commentData";
 import articleData from "../prisma/data/articleData";
 import topicData from "../prisma/data/topicData";
 import likesData from "../prisma/data/likesData";
-beforeEach(() => {
-  return seedData(userData, topicData, articleData, commentData, likesData);
+beforeEach(async () => {
+  await seedData(userData, topicData, articleData, commentData, likesData);
 });
 describe("Testing the server", () => {
   describe("GET /api/docs", () => {
@@ -477,6 +477,16 @@ describe("Testing the server", () => {
       } = response;
       expect(status).toBe(400);
       expect(msg).toBe("likes value can only be 1 or -1");
+    });
+    test("400: when a user that doesn't exist tries to post a like", async () => {
+      const likeToPost = { user_id: 5, article_id: 3, value: 1 };
+      const response = await supertest(app).post("/api/likes").send(likeToPost);
+      const {
+        status,
+        body: { msg },
+      } = response;
+      expect(status).toBe(400);
+      expect(msg).toBe("Bad request");
     });
   });
 });
