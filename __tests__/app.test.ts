@@ -10,11 +10,11 @@ import {
 } from "../TS types";
 import fs from "fs/promises";
 import seedData from "../prisma/seed/seed";
-import userData from "../prisma/data/userData";
-import commentData from "../prisma/data/commentData";
-import articleData from "../prisma/data/articleData";
-import topicData from "../prisma/data/topicData";
-import likesData from "../prisma/data/likesData";
+import userData from "../prisma/testData/userData";
+import commentData from "../prisma/testData/commentData";
+import articleData from "../prisma/testData/articleData";
+import topicData from "../prisma/testData/topicData";
+import likesData from "../prisma/testData/likesData";
 beforeEach(async () => {
   await seedData(userData, topicData, articleData, commentData, likesData);
 });

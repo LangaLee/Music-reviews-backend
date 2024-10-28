@@ -10,7 +10,6 @@
     "migrate": "dotenv -e .env.production -- npx prisma migrate dev --name init"
   },
   "prisma": {
-    "seed-1": "dotenv -e .env.test npx tsx ./prisma/seed/runSeed.ts",
     "seed": "dotenv -e .env.production npx tsx ./prisma/seed/runSeed.ts"
   },
   "keywords": [],
