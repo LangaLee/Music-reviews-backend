@@ -1,7 +1,7 @@
 {
   "name": "nc-news-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "listen.ts",
   "type": "commonjs",
   "scripts": {
     "test": "dotenv -e .env.test -- jest",
