@@ -4,7 +4,7 @@
   "main": "listen.ts",
   "type": "commonjs",
   "scripts": {
-    "start": "node listen.js",
+    "start": "ts-node listen.ts",
     "test": "dotenv -e .env.test -- jest",
     "setup-db": "psql -f prisma/setup-db.sql",
     "migrate:postgres": "dotenv -e .env.test -- npx prisma migrate dev --name init",

@@ -1,5 +1,4 @@
-const app = require("./app.ts");
-
+import app from "./app";
 const { PORT = 9090 } = process.env;
 
 app.listen(PORT, () => {
