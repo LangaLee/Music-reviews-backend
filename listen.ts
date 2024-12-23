@@ -1,6 +1,6 @@
 import app from "./app";
 
-const { PORT = 9090 } = process.env;
+const { PORT = 3000} = process.env;
 
 app.listen(PORT, () => {
   console.log(`listing on ${PORT}!!!`);

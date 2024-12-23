@@ -5,7 +5,7 @@ async function getDoc(req: express.Request, res: express.Response) {
     `${__dirname}/../../documentation/endpoints.json`,
     "utf-8"
   );
-  res.status(200).send({ docs });
+  res.status(200).send({ docs: JSON.parse(docs) });
 }
 
 export default getDoc;
