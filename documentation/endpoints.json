@@ -123,5 +123,22 @@
       "body": "string",
       "article_id": "number"
     }
+  },
+  "GET /api/likes/:user_id": {
+    "description": "returns all the likes and dislikes by that user",
+    "exampleResponse": {
+      "likes": [
+        { "user_id": 1, "article_id": 1, "value": 1 },
+        { "user_id": 1, "article_id": 2, "value": -1 }
+      ]
+    }
+  },
+  "POST /api/likes/:user_id": {
+    "description": "posts a new like object for a specific article by the user",
+    "requiredData": {
+      "user_id": "number",
+      "article_id": "number",
+      "value": "number (1 | -1)"
+    }
   }
 }

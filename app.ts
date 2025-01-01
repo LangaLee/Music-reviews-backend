@@ -28,7 +28,7 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 
 app.post("/api/articles", postArticle);
-//ncnewsbackendyep
+
 app.get("/api/articles/:article_id/comments", getComments);
 
 app.post("/api/articles/comments", postComment);
