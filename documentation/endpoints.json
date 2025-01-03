@@ -20,95 +20,95 @@
       "profile_pic_url": "string"
     }
   },
-  "GET /api/topics": {
-    "description": "returns an object with the available topics",
+  "GET /api/genres": {
+    "description": "returns an object with the available genres",
     "exampleResponse": {
-      "topics": [
+      "genres": [
         {
-          "topic_id": "number",
-          "topic_name": "string",
+          "genre_id": "number",
+          "genre_name": "string",
           "description": "string"
         },
         {
-          "topic_id": "number",
-          "topic_name": "string",
+          "genre_id": "number",
+          "genre_name": "string",
           "description": "string"
         }
       ]
     }
   },
-  "POST /api/topics": {
-    "description": "posts a new topic",
+  "POST /api/genres": {
+    "description": "posts a new genre",
     "requiredData": {
-      "topic_name": "string",
+      "genre_name": "string",
       "description": "string"
     }
   },
-  "GET /api/articles": {
-    "description": "returns an object with all available articles",
+  "GET /api/reviews": {
+    "description": "returns an object with all available reviews",
     "exampleResponse": {
-      "articles": [
+      "reviews": [
         {
-          "article_id": "number",
+          "review_id": "number",
           "created_at": "Date",
-          "title": "string",
-          "article_image_url": "string",
+          "review_title": "string",
+          "review_image_url": "string",
           "likes": "number",
           "dislikes": "number",
           "commentCount": "number",
           "author": "string",
-          "topic": "string"
+          "genre": "string"
         }
       ]
     }
   },
-  "POST /api/articles": {
-    "description": "posts a new article",
+  "POST /api/reviews": {
+    "description": "posts a new review",
     "requiredData": {
-      "title": "string",
+      "review_title": "string",
       "body": "string",
-      "article_image_url": "string",
+      "review_image_url": "string",
       "author_id": "number",
-      "topic_id": "number",
+      "genre_id": "number",
       "likes": "number",
       "dislikes": "number"
     }
   },
-  "GET /api/articles/:article_id": {
-    "description": "returns the article with that id",
+  "GET /api/reviews/:review_id": {
+    "description": "returns the review with that id",
     "exampleResponse": {
-      "article": {
-        "article_id": "number",
+      "review": {
+        "review_id": "number",
         "created_at": "Date",
-        "title": "string",
+        "review_title": "string",
         "body": "string",
-        "article_image_url": "string",
+        "review_image_url": "string",
         "likes": "number",
         "dislikes": "number",
         "author": "string",
-        "topic": "string",
+        "genre": "string",
         "commentCount": "number"
       }
     }
   },
-  "GET /api/articles/:article_id/comments": {
-    "description": "returns all the availabe comments from that articles",
+  "GET /api/reviews/:review_id/comments": {
+    "description": "returns all the availabe comments from that reviews",
     "exampleResponse": {
       "comments": [
         {
-          "article_id": "number",
+          "review_id": "number",
           "body": "string",
           "created_at": "Date",
           "author": "string"
         },
         {
-          "article_id": "number",
+          "review_id": "number",
           "body": "string",
           "created_at": "Date",
           "author": "string"
         },
         {
-          "article_id": "number",
+          "review_id": "number",
           "body": "string",
           "created_at": "Date",
           "author": "string"
@@ -116,28 +116,28 @@
       ]
     }
   },
-  "POST /api/articles/:article_id/comments": {
+  "POST /api/reviews/:review_id/comments": {
     "description": "posts a new comment",
     "requiredData": {
       "author_id": "number",
       "body": "string",
-      "article_id": "number"
+      "review_id": "number"
     }
   },
   "GET /api/likes/:user_id": {
     "description": "returns all the likes and dislikes by that user",
     "exampleResponse": {
       "likes": [
-        { "user_id": 1, "article_id": 1, "value": 1 },
-        { "user_id": 1, "article_id": 2, "value": -1 }
+        { "user_id": 1, "review_id": 1, "value": 1 },
+        { "user_id": 1, "review_id": 2, "value": -1 }
       ]
     }
   },
   "POST /api/likes/:user_id": {
-    "description": "posts a new like object for a specific article by the user",
+    "description": "posts a new like object for a specific review by the user",
     "requiredData": {
       "user_id": "number",
-      "article_id": "number",
+      "review_id": "number",
       "value": "number (1 | -1)"
     }
   }
