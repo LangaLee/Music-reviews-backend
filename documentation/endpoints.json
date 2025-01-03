@@ -125,6 +125,20 @@
     }
   },
   "GET /api/likes/:user_id": {
-    "description": "returns the available like objects for that user which indicate weather a user has like a certain article or not"
+    "description": "returns all the likes and dislikes by that user",
+    "exampleResponse": {
+      "likes": [
+        { "user_id": 1, "article_id": 1, "value": 1 },
+        { "user_id": 1, "article_id": 2, "value": -1 }
+      ]
+    }
+  },
+  "POST /api/likes/:user_id": {
+    "description": "posts a new like object for a specific article by the user",
+    "requiredData": {
+      "user_id": "number",
+      "article_id": "number",
+      "value": "number (1 | -1)"
+    }
   }
 }
