@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, test } from "@jest/globals";
+import { beforeEach, describe, expect, test } from "@jest/globals";
 import app from "../app";
 import supertest from "supertest";
 import {
@@ -31,7 +31,7 @@ describe("Testing the server", () => {
         body: { docs },
       } = response;
       expect(status).toBe(200);
-      expect(docs).toEqual(documentation);
+      expect(docs).toEqual(JSON.parse(documentation));
     });
   });
   describe("GET /api/users", () => {
