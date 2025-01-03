@@ -3,8 +3,8 @@ import app from "../app";
 import supertest from "supertest";
 import {
   returnedUsers,
-  returnedTopics,
-  returnedArticles,
+  returnedGenres,
+  returnedReviews,
   returnedComments,
   like,
 } from "../TS types";
@@ -12,11 +12,11 @@ import fs from "fs/promises";
 import seedData from "../prisma/seed/seed";
 import userData from "../prisma/testData/userData";
 import commentData from "../prisma/testData/commentData";
-import articleData from "../prisma/testData/articleData";
-import topicData from "../prisma/testData/topicData";
+import reviewData from "../prisma/testData/reviewData";
+import genreData from "../prisma/testData/genreData";
 import likesData from "../prisma/testData/likesData";
 beforeEach(async () => {
-  await seedData(userData, topicData, articleData, commentData, likesData);
+  await seedData(userData, genreData, reviewData, commentData, likesData);
 });
 describe("Testing the server", () => {
   describe("GET /api/docs", () => {
@@ -96,47 +96,47 @@ describe("Testing the server", () => {
       expect(msg).toBe("Endpoint not found");
     });
   });
-  describe("GET /api/topics", () => {
-    test("200: returns available topics", async () => {
-      const response = await supertest(app).get("/api/topics");
+  describe("GET /api/genres", () => {
+    test("200: returns available genres", async () => {
+      const response = await supertest(app).get("/api/genres");
       const {
         status,
-        body: { topics },
+        body: { genres },
       } = response;
       expect(status).toBe(200);
-      expect(topics.length).toBe(4);
-      topics.forEach((topic: returnedTopics) => {
-        expect(typeof topic.topic_id).toBe("number");
-        expect(typeof topic.topic_name).toBe("string");
-        expect(typeof topic.description).toBe("string");
+      expect(genres.length).toBe(4);
+      genres.forEach((genre: returnedGenres) => {
+        expect(typeof genre.genre_id).toBe("number");
+        expect(typeof genre.genre_name).toBe("string");
+        expect(typeof genre.description).toBe("string");
       });
     });
   });
-  describe("POST /api/topics", () => {
-    test("201: returns the posted topic", async () => {
-      const topicToPost = {
-        topic_name: "Anime Ops & Eds",
+  describe("POST /api/genres", () => {
+    test("201: returns the posted genre", async () => {
+      const genreToPost = {
+        genre_name: "Anime Ops & Eds",
         description: "taking a look at a section that makes the anime effect",
       };
       const response = await supertest(app)
-        .post("/api/topics")
-        .send(topicToPost);
+        .post("/api/genres")
+        .send(genreToPost);
       const {
         status,
-        body: { topic },
+        body: { genre },
       } = response;
       expect(status).toBe(201);
-      expect(topic).toEqual({
-        topic_id: 5,
-        topic_name: "Anime Ops & Eds",
+      expect(genre).toEqual({
+        genre_id: 5,
+        genre_name: "Anime Ops & Eds",
         description: "taking a look at a section that makes the anime effect",
       });
     });
     test("400: when posting without the required fields", async () => {
-      const topicToInsert = { topic_name: "lol" };
+      const genreToInsert = { genre_name: "lol" };
       const response = await supertest(app)
-        .post("/api/topics")
-        .send(topicToInsert);
+        .post("/api/genres")
+        .send(genreToInsert);
       const {
         status,
         body: { msg },
@@ -145,69 +145,69 @@ describe("Testing the server", () => {
       expect(msg).toBe("Bad request");
     });
   });
-  describe("GET /api/articles", () => {
-    test("200: returns all available articles", async () => {
-      const response = await supertest(app).get("/api/articles");
+  describe("GET /api/reviews", () => {
+    test("200: returns all available reviews", async () => {
+      const response = await supertest(app).get("/api/reviews");
       const {
         status,
-        body: { articles },
+        body: { reviews },
       } = response;
       expect(status).toBe(200);
-      expect(articles.length).toBe(3);
-      articles.forEach((article: returnedArticles) => {
-        expect(typeof article.article_id).toBe("number");
-        expect(typeof article.article_image_url).toBe("string");
-        expect(typeof article.author).toBe("string");
-        expect(new Date(article.created_at)).toEqual(expect.any(Date));
-        expect(typeof article.dislikes).toBe("number");
-        expect(typeof article.likes).toBe("number");
-        expect(typeof article.title).toBe("string");
-        expect(typeof article.topic).toBe("string");
-        expect(typeof article.commentCount).toBe("number");
+      expect(reviews.length).toBe(3);
+      reviews.forEach((review: returnedReviews) => {
+        expect(typeof review.review_id).toBe("number");
+        expect(typeof review.review_image_url).toBe("string");
+        expect(typeof review.author).toBe("string");
+        expect(new Date(review.created_at)).toEqual(expect.any(Date));
+        expect(typeof review.dislikes).toBe("number");
+        expect(typeof review.likes).toBe("number");
+        expect(typeof review.review_title).toBe("string");
+        expect(typeof review.genre).toBe("string");
+        expect(typeof review.commentCount).toBe("number");
       });
     });
   });
-  describe("POST /api/articles", () => {
-    test("201: returns the posted article", async () => {
-      const articleToPost = {
-        title: "listening to new music",
+  describe("POST /api/reviews", () => {
+    test("201: returns the posted review", async () => {
+      const reviewToPost = {
+        review_title: "listening to new music",
         body: "listening to new music can be challenging epecially when the genre is new to you and is no an easy listen. But most times it usually pays off. As the years have went by we have become reliant on people recommending things for us and critics telling us whats good and whats not. We have lost that sense of adventure.",
-        article_image_url:
+        review_image_url:
           "https://lh3.googleusercontent.com/xdvVADAcKur3p70uPFbMjIojgvgMomG762aHBMQSM9ry4rmWx8ft5bDt2z7ZCPLv62BviVHCt797IPCeRw=w544-h544-l90-rj",
         author_id: 3,
-        topic_id: 4,
+        genre_id: 4,
         likes: 0,
         dislikes: 0,
       };
       const response = await supertest(app)
-        .post("/api/articles")
-        .send(articleToPost);
+        .post("/api/reviews")
+        .send(reviewToPost);
       const {
         status,
-        body: { article },
+        body: { review },
       } = response;
       expect(status).toBe(201);
-      expect(article.article_id).toBe(4);
-      expect(article.title).toBe(articleToPost.title);
-      expect(article.body).toBe(articleToPost.body);
-      expect(article.article_image_url).toBe(articleToPost.article_image_url);
-      expect(article.author_id).toBe(3);
-      expect(article.topic_id).toBe(4);
-      expect(article.likes).toBe(0);
-      expect(article.dislikes).toBe(0);
+      expect(review.review_id).toBe(4);
+      expect(review.review_title).toBe(reviewToPost.review_title);
+      expect(review.body).toBe(reviewToPost.body);
+      expect(review.review_image_url).toBe(reviewToPost.review_image_url);
+      expect(review.author_id).toBe(3);
+      expect(review.genre_id).toBe(4);
+      expect(review.likes).toBe(0);
+      expect(review.dislikes).toBe(0);
     });
     test("400: when a required field is missing", async () => {
-      const articleToPost = {
+      const reviewToPost = {
         title: "listening to new music",
         body: "listening to new music can be challenging epecially when the genre is new to you and is no an easy listen. But most times it usually pays off. As the years have went by we have become reliant on people recommending things for us and critics telling us whats good and whats not. We have lost that sense of adventure.",
-        article_image_url:
+        review_image_url:
           "https://lh3.googleusercontent.com/xdvVADAcKur3p70uPFbMjIojgvgMomG762aHBMQSM9ry4rmWx8ft5bDt2z7ZCPLv62BviVHCt797IPCeRw=w544-h544-l90-rj",
         author_id: 3,
-        topic_id: 4,
+        genre_id: 4,
       };
       const response = await supertest(app)
-        .post("/api/articles")
-        .send(articleToPost);
+        .post("/api/reviews")
+        .send(reviewToPost);
       const {
         status,
         body: { msg },
@@ -215,20 +215,20 @@ describe("Testing the server", () => {
       expect(status).toBe(400);
       expect(msg).toBe("Bad request");
     });
-    test("400: when the article being posted has an invalid author", async () => {
-      const articleToPost = {
+    test("400: when the review being posted has an invalid author", async () => {
+      const reviewToPost = {
         title: "listening to new music",
         body: "listening to new music can be challenging epecially when the genre is new to you and is no an easy listen. But most times it usually pays off. As the years have went by we have become reliant on people recommending things for us and critics telling us whats good and whats not. We have lost that sense of adventure.",
-        article_image_url:
+        review_image_url:
           "https://lh3.googleusercontent.com/xdvVADAcKur3p70uPFbMjIojgvgMomG762aHBMQSM9ry4rmWx8ft5bDt2z7ZCPLv62BviVHCt797IPCeRw=w544-h544-l90-rj",
         author_id: "three",
-        topic_id: 4,
+        genre_id: 4,
         likes: 0,
         dislikes: 0,
       };
       const response = await supertest(app)
-        .post("/api/articles")
-        .send(articleToPost);
+        .post("/api/reviews")
+        .send(reviewToPost);
       const {
         status,
         body: { msg },
@@ -237,38 +237,38 @@ describe("Testing the server", () => {
       expect(msg).toBe("Bad request");
     });
   });
-  describe("GET /api/articles/:article_id", () => {
-    test("200: returns the article with that id", async () => {
-      const response = await supertest(app).get("/api/articles/1");
+  describe("GET /api/reviews/:review_id", () => {
+    test("200: returns the review with that id", async () => {
+      const response = await supertest(app).get("/api/reviews/1");
       const {
         status,
         body: {
-          article: {
-            article_id,
-            article_image_url,
+          review: {
+            review_id,
+            review_image_url,
             body,
-            title,
+            review_title,
             author,
             likes,
             dislikes,
             commentCount,
-            topic,
+            genre,
           },
         },
       } = response;
       expect(status).toBe(200);
-      expect(article_id).toBe(1);
-      expect(typeof article_image_url).toBe("string");
+      expect(review_id).toBe(1);
+      expect(typeof review_image_url).toBe("string");
       expect(typeof body).toBe("string");
-      expect(typeof title).toBe("string");
+      expect(typeof review_title).toBe("string");
       expect(typeof author).toBe("string");
-      expect(typeof topic).toBe("string");
+      expect(typeof genre).toBe("string");
       expect(typeof likes).toBe("number");
       expect(typeof dislikes).toBe("number");
       expect(typeof commentCount).toBe("number");
     });
     test("400: when passed an invalid id", async () => {
-      const response = await supertest(app).get("/api/articles/one");
+      const response = await supertest(app).get("/api/reviews/one");
       const {
         status,
         body: { msg },
@@ -277,18 +277,18 @@ describe("Testing the server", () => {
       expect(msg).toBe("Bad request");
     });
     test("404: when passed a valid id that doesn't exist in the db", async () => {
-      const response = await supertest(app).get("/api/articles/10");
+      const response = await supertest(app).get("/api/reviews/10");
       const {
         status,
         body: { msg },
       } = response;
       expect(status).toBe(404);
-      expect(msg).toBe("article does not exist");
+      expect(msg).toBe("review does not exist");
     });
   });
-  describe("GET /api/articles/:article_id/comments", () => {
-    test("200: returns all the comments under that article", async () => {
-      const response = await supertest(app).get("/api/articles/3/comments");
+  describe("GET /api/reviews/:review_id/comments", () => {
+    test("200: returns all the comments under that review", async () => {
+      const response = await supertest(app).get("/api/reviews/3/comments");
       const {
         status,
         body: { comments },
@@ -296,15 +296,15 @@ describe("Testing the server", () => {
       expect(status).toBe(200);
       expect(comments.length).toBe(3);
       comments.forEach((comment: returnedComments) => {
-        expect(comment.article_id).toBe(3);
+        expect(comment.review_id).toBe(3);
         expect(typeof comment.comment_id).toBe("number");
         expect(typeof comment.body).toBe("string");
         expect(typeof comment.author).toBe("string");
         expect(new Date(comment.created_at)).toEqual(expect.any(Date));
       });
     });
-    test("200: returns an empty array for an article without comments", async () => {
-      const response = await supertest(app).get("/api/articles/1/comments");
+    test("200: returns an empty array for an review without comments", async () => {
+      const response = await supertest(app).get("/api/reviews/1/comments");
       const {
         status,
         body: { comments },
@@ -312,52 +312,52 @@ describe("Testing the server", () => {
       expect(status).toBe(200);
       expect(comments).toHaveLength(0);
     });
-    test("400: returns bad request when passed an invalid article_id", async () => {
+    test("400: returns bad request when passed an invalid review_id", async () => {
       const response = await supertest(app).get(
-        "/api/articles/invalid/comments"
+        "/api/reviews/invalid/comments"
       );
       const {
         status,
         body: { msg },
       } = response;
       expect(status).toBe(400);
-      expect(msg).toBe("invalid article id");
+      expect(msg).toBe("invalid review id");
     });
-    test("404: returns when passed a valid id but the article doesn't exists", async () => {
-      const response = await supertest(app).get("/api/articles/10/comments");
+    test("404: returns when passed a valid id but the review doesn't exists", async () => {
+      const response = await supertest(app).get("/api/reviews/10/comments");
       const {
         status,
         body: { msg },
       } = response;
       expect(status).toBe(404);
-      expect(msg).toBe("article does not exist");
+      expect(msg).toBe("review does not exist");
     });
   });
-  describe("POST /api/articles/comments", () => {
+  describe("POST /api/reviews/comments", () => {
     test("201: returns the posted comment", async () => {
       const commentToPost = {
         author_id: 4,
         body: "its been a while since I listened to that EP, I should go back to it",
-        article_id: 3,
+        review_id: 3,
       };
       const response = await supertest(app)
-        .post("/api/articles/comments")
+        .post("/api/reviews/comments")
         .send(commentToPost);
       const {
         status,
         body: { comment },
       } = response;
       expect(status).toBe(201);
-      expect(comment.article_id).toBe(3);
+      expect(comment.review_id).toBe(3);
       expect(comment.body).toBe(commentToPost.body);
       expect(comment.comment_id).toBe(4);
       expect(new Date(comment.created_at)).toEqual(expect.any(Date));
       expect(comment.author_id).toBe(4);
     });
     test("400: when attempting to post with missing fields", async () => {
-      const commentToPost = { author_id: 2, body: "no article_id" };
+      const commentToPost = { author_id: 2, body: "no review_id" };
       const response = await supertest(app)
-        .post("/api/articles/comments")
+        .post("/api/reviews/comments")
         .send(commentToPost);
       const {
         status,
@@ -369,11 +369,11 @@ describe("Testing the server", () => {
     test("400: posting a comment with an author_id that doesn't exist in the db", async () => {
       const commentToPost = {
         author_id: 9,
-        body: "no article_id",
-        article_id: 3,
+        body: "no review_id",
+        review_id: 3,
       };
       const response = await supertest(app)
-        .post("/api/articles/comments")
+        .post("/api/reviews/comments")
         .send(commentToPost);
       const {
         status,
@@ -382,14 +382,14 @@ describe("Testing the server", () => {
       expect(status).toBe(400);
       expect(msg).toBe("Bad request");
     });
-    test("400: posting a comment with an article_id that doesn't exist in the db", async () => {
+    test("400: posting a comment with an review_id that doesn't exist in the db", async () => {
       const commentToPost = {
         author_id: 2,
-        body: "non existent article_id",
-        article_id: 50,
+        body: "non existent review_id",
+        review_id: 50,
       };
       const response = await supertest(app)
-        .post("/api/articles/comments")
+        .post("/api/reviews/comments")
         .send(commentToPost);
       const {
         status,
@@ -410,7 +410,7 @@ describe("Testing the server", () => {
       expect(likes.length).toBe(2);
       likes.forEach((like: like) => {
         expect(like.user_id).toBe(1);
-        expect(typeof like.article_id).toBe("number");
+        expect(typeof like.review_id).toBe("number");
         expect(typeof like.value).toBe("number");
       });
     });
@@ -444,7 +444,7 @@ describe("Testing the server", () => {
   });
   describe("POST /api/likes", () => {
     test("201: posts the likes object to the database", async () => {
-      const likeObjectToPost = { user_id: 1, article_id: 3, value: 1 };
+      const likeObjectToPost = { user_id: 1, review_id: 3, value: 1 };
       const response = await supertest(app)
         .post("/api/likes")
         .send(likeObjectToPost);
@@ -454,10 +454,10 @@ describe("Testing the server", () => {
         body: { like },
       } = response;
       expect(status).toBe(201);
-      expect(like).toEqual({ like_id: 3, user_id: 1, article_id: 3, value: 1 });
+      expect(like).toEqual({ like_id: 3, user_id: 1, review_id: 3, value: 1 });
     });
-    test("400: when trying to post a like to an article that already has a like by that user", async () => {
-      const likeObjectToPost = { user_id: 1, article_id: 1, value: 1 };
+    test("400: when trying to post a like to an review that already has a like by that user", async () => {
+      const likeObjectToPost = { user_id: 1, review_id: 1, value: 1 };
       const response = await supertest(app)
         .post("/api/likes")
         .send(likeObjectToPost);
@@ -469,7 +469,7 @@ describe("Testing the server", () => {
       expect(msg).toBe("Bad request");
     });
     test("400: when the like object posted has a value that is not 1 or -1", async () => {
-      const likeObjectToPost = { user_id: 1, article_id: 3, value: 2 };
+      const likeObjectToPost = { user_id: 1, review_id: 3, value: 2 };
       const response = await supertest(app)
         .post("/api/likes")
         .send(likeObjectToPost);
@@ -481,7 +481,7 @@ describe("Testing the server", () => {
       expect(msg).toBe("likes value can only be 1 or -1");
     });
     test("400: when a user that doesn't exist tries to post a like", async () => {
-      const likeToPost = { user_id: 5, article_id: 3, value: 1 };
+      const likeToPost = { user_id: 5, review_id: 3, value: 1 };
       const response = await supertest(app).post("/api/likes").send(likeToPost);
       const {
         status,

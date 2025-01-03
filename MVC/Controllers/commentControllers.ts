@@ -8,9 +8,9 @@ export async function getComments(
 ) {
   try {
     const {
-      params: { article_id },
+      params: { review_id },
     } = req;
-    const comments = await fetchComments(Number(article_id));
+    const comments = await fetchComments(Number(review_id));
     res.status(200).send({ comments });
   } catch (error) {
     next(error);

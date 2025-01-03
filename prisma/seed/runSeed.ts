@@ -1,8 +1,8 @@
 import seedData from "./seed";
-import userData from "../devData/userData";
-import topicData from "../devData/topicData";
-import articleData from "../devData/articleData";
-import commentData from "../devData/commentData";
-import likesData from "../devData/likesData";
+import userData from "../testData/userData";
+import genreData from "../testData/genreData";
+import reviewData from "../testData/reviewData";
+import commentData from "../testData/commentData";
+import likesData from "../testData/likesData";
 
-seedData(userData, topicData, articleData, commentData, likesData);
+seedData(userData, genreData, reviewData, commentData, likesData);

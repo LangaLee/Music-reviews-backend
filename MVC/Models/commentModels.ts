@@ -1,26 +1,26 @@
 import { commentDataType, returnedComments } from "../../TS types";
-import { fetchArticleById } from "./articleModel";
+import { fetchReviewById } from "./reviewModel";
 import client from "./prismaClient";
-export async function fetchComments(article_id: number) {
+export async function fetchComments(review_id: number) {
   try {
-    if (!article_id) {
+    if (!review_id) {
       await client.$disconnect();
-      return Promise.reject({ status: 400, msg: "invalid article id" });
+      return Promise.reject({ status: 400, msg: "invalid review id" });
     }
-    await fetchArticleById(article_id);
+    await fetchReviewById(review_id);
     const comments = await client.comments.findMany({
-      where: { article_id: article_id },
+      where: { review_id: review_id },
       include: { author: { select: { username: true } } },
     });
     const commentsToSend: Array<returnedComments> = comments.map((comment) => {
       const {
-        article_id,
+        review_id,
         body,
         created_at,
         author: { username },
         comment_id,
       } = comment;
-      return { article_id, body, created_at, author: username, comment_id };
+      return { review_id, body, created_at, author: username, comment_id };
     });
     return commentsToSend;
   } finally {

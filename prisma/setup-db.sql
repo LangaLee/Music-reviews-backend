@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS nc_news;
-DROP DATABASE IF EXISTS nc_news_test;
+DROP DATABASE IF EXISTS music_reviews;
+DROP DATABASE IF EXISTS music_reviews_test;
 
-CREATE DATABASE nc_news;
-CREATE DATABASE nc_news_test;
+CREATE DATABASE music_reviews;
+CREATE DATABASE music_reviews_test;

@@ -123,5 +123,8 @@
       "body": "string",
       "article_id": "number"
     }
+  },
+  "GET /api/likes/:user_id": {
+    "description": "returns the available like objects for that user which indicate weather a user has like a certain article or not"
   }
 }

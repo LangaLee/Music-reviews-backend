@@ -20,32 +20,32 @@ model Users {
   profile_pic_url String      @db.VarChar(500)
   username        String      @db.VarChar(100)
   password        String      @db.VarChar(500)
-  articlesByUser  Articles[]
-  commentsByUser  Comments[]
-  userLikes       UserLikes[]
+  Reviews         Reviews[]
+  Comments        Comments[]
+  UserLikes       UserLikes[]
 }
 
-model Topics {
-  topic_id          Int        @id @default(autoincrement())
-  topic_name        String     @unique
-  description       String
-  articlesUderTopic Articles[]
+model Genres {
+  genre_id    Int       @id @default(autoincrement())
+  genre_name  String    @unique
+  description String
+  Reviews     Reviews[]
 }
 
-model Articles {
-  article_id        Int         @id @default(autoincrement())
-  created_at        DateTime    @default(now())
-  title             String
-  body              String
-  article_image_url String
-  author            Users       @relation(fields: [author_id], references: [user_id])
-  author_id         Int
-  topic             Topics      @relation(fields: [topic_id], references: [topic_id])
-  topic_id          Int
-  likes             Int
-  dislikes          Int
-  articleComments   Comments[]
-  userLikes         UserLikes[]
+model Reviews {
+  review_id        Int         @id @default(autoincrement())
+  created_at       DateTime    @default(now())
+  review_title     String
+  body             String
+  review_image_url String
+  author           Users       @relation(fields: [author_id], references: [user_id])
+  author_id        Int
+  genre            Genres      @relation(fields: [genre_id], references: [genre_id])
+  genre_id         Int
+  likes            Int
+  dislikes         Int
+  reviewComments   Comments[]
+  userLikes        UserLikes[]
 }
 
 model Comments {
@@ -54,15 +54,15 @@ model Comments {
   author     Users    @relation(fields: [author_id], references: [user_id])
   author_id  Int
   body       String
-  article    Articles @relation(fields: [article_id], references: [article_id])
-  article_id Int
+  review     Reviews  @relation(fields: [review_id], references: [review_id])
+  review_id  Int
 }
 
 model UserLikes {
-  like_id    Int      @id @default(autoincrement())
-  user       Users    @relation(fields: [user_id], references: [user_id])
-  user_id    Int
-  article    Articles @relation(fields: [article_id], references: [article_id])
-  article_id Int      @unique
-  value      Int
+  like_id   Int     @id @default(autoincrement())
+  user      Users   @relation(fields: [user_id], references: [user_id])
+  user_id   Int
+  review    Reviews @relation(fields: [review_id], references: [review_id])
+  review_id Int     @unique
+  value     Int
 }

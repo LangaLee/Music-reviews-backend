@@ -1,26 +1,26 @@
 import express from "express";
 
 export type userDataType = Array<userToInsert>;
-export type topicDataType = Array<{ topic_name: string; description: string }>;
-export type articleDataType = Array<article>;
+export type genreDataType = Array<{ genre_name: string; description: string }>;
+export type reviewDataType = Array<review>;
 export type commentDataType = Array<{
   author_id: number;
   body: string;
-  article_id: number;
+  review_id: number;
 }>;
 export type likesDataType = Array<like>;
-export type article = {
-  title: string;
+export type review = {
+  review_title: string;
   body: string;
-  article_image_url: string;
+  review_image_url: string;
   author_id: number;
-  topic_id: number;
+  genre_id: number;
   likes: number;
   dislikes: number;
 };
 export type like = {
   user_id: number;
-  article_id: number;
+  review_id: number;
   value: number;
 };
 export type returnedUsers = {
@@ -30,19 +30,19 @@ export type returnedUsers = {
   username: string;
 };
 
-export type returnedTopics = {
-  topic_id: number;
-  topic_name: string;
+export type returnedGenres = {
+  genre_id: number;
+  genre_name: string;
   description: string;
 };
 
-export type returnedArticles = {
-  article_id: number;
+export type returnedReviews = {
+  review_id: number;
   created_at: Date;
-  title: string;
-  article_image_url: string;
+  review_title: string;
+  review_image_url: string;
   author: string;
-  topic: string;
+  genre: string;
   likes: number;
   dislikes: number;
   commentCount: number;
@@ -54,7 +54,7 @@ export interface errorThrown extends express.Errback {
 }
 
 export type returnedComments = {
-  article_id: number;
+  review_id: number;
   comment_id: number;
   body: string;
   author: string;
@@ -66,7 +66,7 @@ export type userToInsert = {
   profile_pic_url: string;
 };
 
-export type topicToInsert = {
-  topic_name: string;
+export type genreToInsert = {
+  genre_name: string;
   description: string;
 };

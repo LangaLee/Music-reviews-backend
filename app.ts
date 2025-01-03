@@ -1,12 +1,12 @@
 import express from "express";
 import { getUsers, postUser } from "./MVC/Controllers/userControllers";
 import getDoc from "./MVC/Controllers/docControllers";
-import { getTopics, postTopic } from "./MVC/Controllers/topicControllers";
+import { getGenres, postGenre } from "./MVC/Controllers/genreControllers";
 import {
-  getArticles,
-  getArticleById,
-  postArticle,
-} from "./MVC/Controllers/articleControllers";
+  getReviews,
+  getReviewsById,
+  postReview,
+} from "./MVC/Controllers/reviewControllers";
 import { errorThrown } from "./TS types";
 import { getComments, postComment } from "./MVC/Controllers/commentControllers";
 import { getLikes, postLikes } from "./MVC/Controllers/likeControllers";
@@ -19,19 +19,19 @@ app.post("/api/users", postUser);
 
 app.get("/api/docs", getDoc);
 
-app.get("/api/topics", getTopics);
+app.get("/api/genres", getGenres);
 
-app.post("/api/topics", postTopic);
+app.post("/api/genres", postGenre);
 
-app.get("/api/articles", getArticles);
+app.get("/api/reviews", getReviews);
 
-app.get("/api/articles/:article_id", getArticleById);
+app.get("/api/reviews/:review_id", getReviewsById);
 
-app.post("/api/articles", postArticle);
-//ncnewsbackendyep
-app.get("/api/articles/:article_id/comments", getComments);
+app.post("/api/reviews", postReview);
 
-app.post("/api/articles/comments", postComment);
+app.get("/api/reviews/:review_id/comments", getComments);
+
+app.post("/api/reviews/comments", postComment);
 
 app.get("/api/likes/:user_id", getLikes);
 
@@ -61,6 +61,6 @@ export default app;
 /* 
 Enpoints to add 
 delete /api/comments/:comment_id
-delete /api/articles/:article_id
+delete /api/reviews/:review_id
 patch /api/likes/:user_id/:like_id
 */

@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 
 import {
-  articleDataType,
+  reviewDataType,
   commentDataType,
-  topicDataType,
+  genreDataType,
   userDataType,
   likesDataType,
 } from "../../TS types";
@@ -31,12 +31,12 @@ async function deleteTables() {
 async function insertUsers(users: userDataType) {
   await client.users.createMany({ data: users });
 }
-async function insertTopics(topics: topicDataType) {
-  await client.topics.createMany({ data: topics });
+async function insertGenres(genres: genreDataType) {
+  await client.genres.createMany({ data: genres });
 }
-async function insertArticles(articles: articleDataType) {
-  await client.articles.createMany({
-    data: articles,
+async function insertReviews(reviews: reviewDataType) {
+  await client.reviews.createMany({
+    data: reviews,
   });
 }
 async function insertComments(comments: commentDataType) {
@@ -49,15 +49,15 @@ async function insertLikes(likes: likesDataType) {
 
 async function seedData(
   users: userDataType,
-  topics: topicDataType,
-  articles: articleDataType,
+  genres: genreDataType,
+  reviews: reviewDataType,
   comments: commentDataType,
   likes: likesDataType
 ) {
   await deleteTables();
   await insertUsers(users);
-  await insertTopics(topics);
-  await insertArticles(articles);
+  await insertGenres(genres);
+  await insertReviews(reviews);
   await insertComments(comments);
   await insertLikes(likes);
 }

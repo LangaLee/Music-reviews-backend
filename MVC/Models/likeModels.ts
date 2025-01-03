@@ -11,8 +11,8 @@ export async function fetchLikes(user_id: number) {
       return Promise.reject({ msg: "User does not exist", status: 404 });
     }
     const likesToReturn: likesDataType = likes.map((like) => {
-      const { user_id, article_id, value } = like;
-      return { user_id, article_id, value };
+      const { user_id, review_id, value } = like;
+      return { user_id, review_id, value };
     });
     return likesToReturn;
   } finally {
