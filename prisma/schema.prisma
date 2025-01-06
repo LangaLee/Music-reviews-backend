@@ -63,6 +63,6 @@ model UserLikes {
   user      Users   @relation(fields: [user_id], references: [user_id])
   user_id   Int
   review    Reviews @relation(fields: [review_id], references: [review_id])
-  review_id Int     @unique
+  review_id Int
   value     Int
 }

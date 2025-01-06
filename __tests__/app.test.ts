@@ -456,17 +456,17 @@ describe("Testing the server", () => {
       expect(status).toBe(201);
       expect(like).toEqual({ like_id: 3, user_id: 1, review_id: 3, value: 1 });
     });
-    test("400: when trying to post a like to an review that already has a like by that user", async () => {
+    test("201: when trying to post a like to an review that already has a like by that user", async () => {
       const likeObjectToPost = { user_id: 1, review_id: 1, value: 1 };
       const response = await supertest(app)
         .post("/api/likes")
         .send(likeObjectToPost);
       const {
         status,
-        body: { msg },
+        body: { like },
       } = response;
-      expect(status).toBe(400);
-      expect(msg).toBe("Bad request");
+      expect(status).toBe(201);
+      expect(like).toEqual({ like_id: 1, user_id: 1, review_id: 1, value: 1 });
     });
     test("400: when the like object posted has a value that is not 1 or -1", async () => {
       const likeObjectToPost = { user_id: 1, review_id: 3, value: 2 };
