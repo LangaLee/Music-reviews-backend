@@ -8,7 +8,7 @@
     "test": "dotenv -e .env.test -- jest",
     "setup-db": "psql -f prisma/setup-db.sql",
     "migrate:postgres": "dotenv -e .env.test -- npx prisma migrate dev --name init",
-    "migrate": "dotenv -e .env.production -- npx prisma migrate dev --name init"
+    "migrate::supabase": "dotenv -e .env.production -- npx prisma migrate dev --name init"
   },
   "prisma": {
     "seed": "dotenv -e .env.production npx tsx ./prisma/seed/runSeed.ts"
